@@ -1,0 +1,277 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system — "Nilavilakku & Kasavu"
+ * Kasavu Ivory · Antique Gold · Tharavadu Teak · Banana Leaf Sage
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-body: "Outfit", "Manjari", system-ui, sans-serif;
+  --font-malayalam: "Manjari", "Outfit", sans-serif;
+  --font-hand: "Chilanka", "Manjari", cursive;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* Wedding palette */
+  --color-ivory: var(--ivory);
+  --color-ivory-deep: var(--ivory-deep);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-deep: var(--gold-deep);
+  --color-teak: var(--teak);
+  --color-teak-deep: var(--teak-deep);
+  --color-teak-light: var(--teak-light);
+  --color-sage: var(--sage);
+  --color-sage-light: var(--sage-light);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  --ivory: oklch(0.967 0.011 89.7); /* #F7F4EC Kasavu Ivory */
+  --ivory-deep: oklch(0.94 0.016 88);
+  --gold: oklch(0.725 0.1 82.3); /* #C5A059 Antique Gold */
+  --gold-light: oklch(0.865 0.085 86); /* bright kasavu highlight */
+  --gold-deep: oklch(0.58 0.085 76); /* aged brass */
+  --teak: oklch(0.243 0.014 41.6); /* #261E1B Tharavadu Teak */
+  --teak-deep: oklch(0.185 0.011 40); /* near-black teak */
+  --teak-light: oklch(0.315 0.02 45); /* warm teak surface */
+  --sage: oklch(0.511 0.042 157.9); /* #526E5D Banana Leaf Sage */
+  --sage-light: oklch(0.65 0.05 155);
+
+  --background: var(--ivory);
+  --foreground: var(--teak);
+  --card: oklch(0.985 0.008 95);
+  --card-foreground: var(--teak);
+  --popover: oklch(0.985 0.008 95);
+  --popover-foreground: var(--teak);
+  --primary: var(--gold);
+  --primary-foreground: var(--teak-deep);
+  --secondary: var(--ivory-deep);
+  --secondary-foreground: var(--teak);
+  --muted: var(--ivory-deep);
+  --muted-foreground: oklch(0.5 0.02 55);
+  --accent: var(--sage);
+  --accent-foreground: var(--ivory);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--ivory);
+  --border: oklch(0.88 0.02 80);
+  --input: oklch(0.88 0.02 80);
+  --ring: var(--gold);
+}
+
+.dark {
+  --background: var(--teak-deep);
+  --foreground: var(--ivory);
+  --card: var(--teak);
+  --card-foreground: var(--ivory);
+  --popover: var(--teak);
+  --popover-foreground: var(--ivory);
+  --primary: var(--gold);
+  --primary-foreground: var(--teak-deep);
+  --secondary: var(--teak-light);
+  --secondary-foreground: var(--ivory);
+  --muted: var(--teak-light);
+  --muted-foreground: oklch(0.75 0.02 70);
+  --accent: var(--sage-light);
+  --accent-foreground: var(--teak-deep);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: var(--gold);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--gold) 35%, transparent);
+    color: var(--teak-deep);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--teak-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--gold) 55%, var(--teak));
+    border-radius: 8px;
+    border: 2px solid var(--teak-deep);
+  }
+
+  /* Lenis smooth scroll */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+/* ---------- Signature utilities ---------- */
+
+@utility text-gold-shine {
+  background: linear-gradient(
+    105deg,
+    var(--color-gold) 12%,
+    var(--color-gold-light) 32%,
+    oklch(0.98 0.05 95) 50%,
+    var(--color-gold-light) 68%,
+    var(--color-gold) 88%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gold-shine 5.5s linear infinite;
+}
+
+
+@utility glass-dark {
+  background: color-mix(in oklab, var(--color-teak-light) 52%, transparent);
+  backdrop-filter: blur(14px) saturate(135%);
+  border: 1px solid color-mix(in oklab, var(--color-gold) 22%, transparent);
+  box-shadow:
+    0 24px 60px -24px rgb(0 0 0 / 0.55),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+@utility glass-light {
+  background: color-mix(in oklab, oklch(1 0 0) 58%, transparent);
+  backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid color-mix(in oklab, var(--color-gold) 32%, transparent);
+  box-shadow: 0 24px 60px -28px color-mix(in oklab, var(--color-teak) 40%, transparent);
+}
+
+@utility card-parchment {
+  background: linear-gradient(165deg, oklch(0.99 0.006 96), var(--color-ivory));
+  border: 1px solid color-mix(in oklab, var(--color-gold) 50%, transparent);
+  box-shadow:
+    0 0 0 6px var(--color-ivory),
+    0 0 0 7px color-mix(in oklab, var(--color-gold) 40%, transparent),
+    0 50px 100px -40px rgb(0 0 0 / 0.6);
+}
+
+@utility gold-hairline {
+  border: 1px solid color-mix(in oklab, var(--color-gold) 35%, transparent);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility animate-flame {
+  animation: flame-flicker 1.8s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+@utility animate-float-y {
+  animation: float-y 5s ease-in-out infinite;
+}
+
+@utility animate-glow-pulse {
+  animation: glow-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes gold-shine {
+  to {
+    background-position: -200% center;
+  }
+}
+
+@keyframes flame-flicker {
+  0%,
+  100% {
+    transform: scaleY(1) rotate(-1.5deg);
+    opacity: 1;
+  }
+  30% {
+    transform: scaleY(1.12) rotate(1.5deg);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scaleY(0.94) rotate(-1deg);
+    opacity: 1;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}

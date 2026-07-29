@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" role="img" aria-label="Wedding gallery placeholder">
+  <rect width="1200" height="1600" fill="#f7efe2"/>
+  <rect x="80" y="80" width="1040" height="1440" rx="40" fill="#fffdf9" stroke="#c9aa5f" stroke-width="10"/>
+  <path d="M220 1140c80-180 180-290 300-340 80-33 170-41 250-18 104 30 175 118 250 280" fill="none" stroke="#4a6a5d" stroke-width="25" stroke-linecap="round"/>
+  <circle cx="390" cy="470" r="120" fill="#d8b36d"/>
+  <path d="M260 520c40-120 120-200 220-220 90 10 170 70 220 170" fill="none" stroke="#7b4f2c" stroke-width="24" stroke-linecap="round"/>
+  <rect x="260" y="1180" width="680" height="140" rx="30" fill="#efe0b8"/>
+  <text x="600" y="1280" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="72" font-weight="700" fill="#5b4632">Wedding Gallery</text>
+</svg>
