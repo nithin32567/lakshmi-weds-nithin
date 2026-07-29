@@ -1,0 +1,9 @@
+{
+  "version": 3,
+  "routes": [
+    { "src": "/favicon.ico", "dest": "/dist/client/favicon.ico" },
+    { "src": "/robots.txt", "dest": "/dist/client/robots.txt" },
+    { "src": "/assets/(.*)", "dest": "/dist/client/assets/$1" },
+    { "src": "/(.*)", "dest": "/api/index.js" }
+  ]
+}

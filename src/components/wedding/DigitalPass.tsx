@@ -1,7 +1,8 @@
-import { motion } from "motion/react";
-import { QRCodeSVG } from "qrcode.react";
+import { lazy, Suspense } from "react";
 
 import { SectionHeading } from "./SectionHeading";
+
+const QRCodeSVG = lazy(() => import("qrcode.react").then((mod) => ({ default: mod.QRCodeSVG })));
 
 const MAPS_URL = "https://maps.google.com/?q=Kalyana+Mandapam+Kochi+Kerala";
 
@@ -15,22 +16,18 @@ export function DigitalPass() {
         subtitle="Save this to your phone — scan at the venue gate for directions and seating."
       />
 
-      <motion.div
-        initial={{ opacity: 0, y: 50, rotateY: -12 }}
-        whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="glass-dark mx-auto mt-14 flex max-w-3xl flex-col items-center gap-8 rounded-3xl p-8 md:flex-row md:p-10"
-      >
+      <div className="glass-dark mx-auto mt-14 flex max-w-3xl flex-col items-center gap-8 rounded-3xl p-8 md:flex-row md:p-10">
         <div className="rounded-2xl bg-ivory p-4">
-          <QRCodeSVG
-            value={MAPS_URL}
-            size={148}
-            bgColor="#F7F4EC"
-            fgColor="#261E1B"
-            level="M"
-            aria-label="QR code linking to the wedding venue location on the map"
-          />
+          <Suspense fallback={<div className="h-[148px] w-[148px] rounded-xl bg-ivory/70" />}> 
+            <QRCodeSVG
+              value={MAPS_URL}
+              size={148}
+              bgColor="#F7F4EC"
+              fgColor="#261E1B"
+              level="M"
+              aria-label="QR code linking to the wedding venue location on the map"
+            />
+          </Suspense>
         </div>
 
         <div className="flex-1 text-center md:text-left">
@@ -65,7 +62,7 @@ export function DigitalPass() {
             Get Directions
           </a>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

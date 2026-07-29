@@ -1,5 +1,15 @@
-import { motion, useMotionValue, useSpring } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentProps } from "react";
+
+const motion = {
+  div: (props: ComponentProps<"div">) => <div {...props} />,
+};
+
+const useMotionValue = (initial: number) => {
+  const [value, setValue] = useState(initial);
+  return { get: () => value, set: setValue } as const;
+};
+
+const useSpring = (value: { get: () => number; set: (v: number) => void }, _options?: unknown) => value;
 
 /**
  * Elegant gold cursor: a crisp dot with a lagging luminous ring on
@@ -60,22 +70,21 @@ export function CustomCursor() {
     <>
       {fine && (
         <>
-          <motion.div
+          <div
             aria-hidden
             className="pointer-events-none fixed left-0 top-0 z-[100] size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold"
-            style={{ x, y }}
+            style={{ transform: `translate(${x.get()}px, ${y.get()}px)` }}
           />
-          <motion.div
+          <div
             aria-hidden
             className="pointer-events-none fixed left-0 top-0 z-[100] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/70"
-            style={{ x: ringX, y: ringY }}
-            animate={{
+            style={{
+              transform: `translate(${ringX.get()}px, ${ringY.get()}px)`,
               width: hovering ? 52 : 34,
               height: hovering ? 52 : 34,
               opacity: hovering ? 0.95 : 0.6,
               backgroundColor: hovering ? "rgba(197,160,89,0.12)" : "rgba(197,160,89,0)",
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
           />
         </>
       )}

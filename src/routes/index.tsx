@@ -1,17 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 
-import { CustomCursor } from "@/components/wedding/CustomCursor";
-import { DigitalPass } from "@/components/wedding/DigitalPass";
-import { Events } from "@/components/wedding/Events";
-import { Footer } from "@/components/wedding/Footer";
-import { Gallery } from "@/components/wedding/Gallery";
-import { Hero } from "@/components/wedding/Hero";
-import { InvitationCard } from "@/components/wedding/InvitationCard";
-import { LoveStory } from "@/components/wedding/LoveStory";
-import { Navbar } from "@/components/wedding/Navbar";
-import { RSVP } from "@/components/wedding/RSVP";
-import { SadyaMenu } from "@/components/wedding/SadyaMenu";
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
+
+const CustomCursor = lazy(() => import("@/components/wedding/CustomCursor").then((m) => ({ default: m.CustomCursor })));
+const DigitalPass = lazy(() => import("@/components/wedding/DigitalPass").then((m) => ({ default: m.DigitalPass })));
+const Events = lazy(() => import("@/components/wedding/Events").then((m) => ({ default: m.Events })));
+const Footer = lazy(() => import("@/components/wedding/Footer").then((m) => ({ default: m.Footer })));
+const Gallery = lazy(() => import("@/components/wedding/Gallery").then((m) => ({ default: m.Gallery })));
+const Hero = lazy(() => import("@/components/wedding/Hero").then((m) => ({ default: m.Hero })));
+const InvitationCard = lazy(() => import("@/components/wedding/InvitationCard").then((m) => ({ default: m.InvitationCard })));
+const LoveStory = lazy(() => import("@/components/wedding/LoveStory").then((m) => ({ default: m.LoveStory })));
+const Navbar = lazy(() => import("@/components/wedding/Navbar").then((m) => ({ default: m.Navbar })));
+const RSVP = lazy(() => import("@/components/wedding/RSVP").then((m) => ({ default: m.RSVP })));
+const SadyaMenu = lazy(() => import("@/components/wedding/SadyaMenu").then((m) => ({ default: m.SadyaMenu })));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,18 +39,20 @@ export const Route = createFileRoute("/")({
 
 export function Index() {
   return (
-    <SmoothScroll>
-      <CustomCursor />
-      <Navbar />
-      <Hero />
-      <InvitationCard />
-      <LoveStory />
-      <Events />
-      <SadyaMenu />
-      <Gallery />
-      <DigitalPass />
-      <RSVP />
-      <Footer />
-    </SmoothScroll>
+    <Suspense fallback={null}>
+      <SmoothScroll>
+        <CustomCursor />
+        <Navbar />
+        <Hero />
+        <InvitationCard />
+        <LoveStory />
+        <Events />
+        <SadyaMenu />
+        <Gallery />
+        <DigitalPass />
+        <RSVP />
+        <Footer />
+      </SmoothScroll>
+    </Suspense>
   );
 }
