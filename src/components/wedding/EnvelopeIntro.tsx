@@ -28,7 +28,6 @@ function playProceduralWaxSnap(soundEnabled: boolean) {
       ctx.resume();
     }
 
-    // High frequency snap crackle
     const bufferSize = ctx.sampleRate * 0.08;
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -50,7 +49,6 @@ function playProceduralWaxSnap(soundEnabled: boolean) {
     noiseFilter.connect(noiseGain);
     noiseGain.connect(ctx.destination);
 
-    // Low deep wooden/wax thud pop
     const osc = ctx.createOscillator();
     const oscGain = ctx.createGain();
     osc.type = "triangle";
@@ -72,31 +70,28 @@ function playProceduralWaxSnap(soundEnabled: boolean) {
 }
 
 /**
- * Senior UI/UX Master 3D Envelope Extraction & Expansion
- * Layering Specification:
- *   - Envelope Back: z-index 1
- *   - Website Card: z-index 2 (starts inside pocket, jumps to 10 in Phase 3 fly-out)
- *   - Envelope Front Pocket: z-index 3 (covers lower half of card)
- *   - Envelope Top Flap: z-index 4 (top cover with heart seal, drops to z-index 0 on fold)
- *   - Heart Seal: z-index 5
- *
- * Animation Physics Sequence:
- *   - Phase 1: Unseal & 3D Flap Open (~1.2s, power2.inOut)
- *   - Phase 2: Paper Extraction (~2.0s, power1.inOut friction ease)
- *   - Phase 3: Fly-Out & Fullscreen Expansion (~2.5s, power2.out screen lock)
+ * World-Class 4-Step 3D Wedding Invitation Sequence:
+ *   1. Envelope opens SLOWLY over 4 seconds -> Background transitions to deep black.
+ *   2. Envelope recedes far back into 3D space & disappears.
+ *   3. 3D Bi-Fold Wedding Card appears and unfolds open ("changes the fold" left & right panels open 180°).
+ *   4. Card expands to fill viewport and smoothly reveals Hero.tsx & actual live website!
  */
 export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const envelopeRef = useRef<HTMLDivElement>(null);
   const topFlapRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const cardShineRef = useRef<HTMLDivElement>(null);
-  const parchmentCoverRef = useRef<HTMLDivElement>(null);
   const waxSealRef = useRef<HTMLDivElement>(null);
   const shockwaveRef = useRef<HTMLDivElement>(null);
   const particlesGroupRef = useRef<HTMLDivElement>(null);
   const hintTextRef = useRef<HTMLParagraphElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  // 3D Bi-Fold Card Refs
+  const bifoldCardRef = useRef<HTMLDivElement>(null);
+  const leftPanelRef = useRef<HTMLDivElement>(null);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const bifoldInteriorCoverRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const [isOpening, setIsOpening] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -123,7 +118,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
     setFragments(frags);
   }, []);
 
-  // Strict page scroll locking during envelope sequence
+  // Strict page scroll locking during intro
   useEffect(() => {
     if (!isCompleted) {
       document.body.style.overflow = "hidden";
@@ -144,7 +139,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
     }
   }, [onComplete]);
 
-  // Subtle gyroscopic tilt tracking cursor in idle phase
+  // Gyroscopic tilt tracking cursor in idle phase
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (isOpening || isCompleted || !envelopeRef.current) return;
@@ -203,27 +198,27 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
       {
         rotateX: 0,
         rotateY: 0,
-        duration: 0.3,
+        duration: 0.35,
         ease: "power2.out",
       },
       0
     );
 
-    // Fade out bottom instruction hint
+    // Fade out hint text
     if (hintTextRef.current) {
       tl.to(hintTextRef.current, { opacity: 0, y: 12, duration: 0.3 }, 0);
     }
 
-    // Unseal: Heart seal peel & 3D shatter explosion
+    // Wax Seal crackle & shatter explosion
     if (waxSealRef.current) {
       tl.to(
         waxSealRef.current,
         { scale: 1.35, rotateZ: -12, duration: 0.15, ease: "power2.out" },
-        0.08
+        0.1
       ).to(
         waxSealRef.current,
-        { opacity: 0, scale: 0.15, rotateZ: 25, duration: 0.22, ease: "power3.in" },
-        0.23
+        { opacity: 0, scale: 0.15, rotateZ: 25, duration: 0.25, ease: "power3.in" },
+        0.25
       );
     }
 
@@ -231,8 +226,8 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
       tl.fromTo(
         shockwaveRef.current,
         { opacity: 0.9, scale: 0.5 },
-        { opacity: 0, scale: 3.5, duration: 0.6, ease: "power2.out" },
-        0.2
+        { opacity: 0, scale: 3.5, duration: 0.65, ease: "power2.out" },
+        0.22
       );
     }
 
@@ -253,64 +248,99 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
           stagger: 0.01,
           ease: "power3.out",
         },
-        0.2
+        0.22
       );
     }
 
-    // ==========================================
-    // PHASE 1: Unseal & Open Top Flap (1.2s, power2.inOut)
-    // ==========================================
+    // =====================================================
+    // STEP 1: Envelope opens SLOWLY over 4.0 seconds
+    // Background changes to solid dark black
+    // =====================================================
     if (topFlapRef.current) {
       tl.to(
         topFlapRef.current,
         {
           rotateX: -180,
-          duration: 1.2,
+          duration: 4.0,
           ease: "power2.inOut",
         },
-        0.3
+        0.4
       );
-
-      // Halfway through fold (at ~0.9s), drop top flap z-index to 0 so it rests behind Envelope Back (z-index: 1)
-      tl.set(topFlapRef.current, { zIndex: 0 }, 0.9);
     }
 
-    // ==========================================
-    // PHASE 2: Paper Extraction (2.0s, power1.inOut paper friction)
-    // ==========================================
-    if (cardRef.current) {
+    if (overlayRef.current) {
       tl.to(
-        cardRef.current,
+        overlayRef.current,
         {
-          y: "-105%",
-          z: 40,
-          duration: 2.0,
-          ease: "power1.inOut",
+          background: "#030509",
+          duration: 3.5,
+          ease: "power2.inOut",
         },
-        1.5
+        0.4
       );
     }
 
-    // Light reflection sheen across paper surface during extraction
-    if (cardShineRef.current) {
-      tl.fromTo(
-        cardShineRef.current,
-        { x: "-120%" },
-        { x: "220%", duration: 1.8, ease: "power2.inOut" },
-        1.7
-      );
-    }
-
-    // ==========================================
-    // PHASE 3: Fly-Out & Fullscreen Expansion (2.5s, power2.out)
-    // ==========================================
-    if (cardRef.current) {
-      // 1. Instantly jump z-index to 10 (above Envelope Front Pocket z-index: 3 and all envelope parts)
-      tl.set(cardRef.current, { zIndex: 10 }, 3.5);
-
-      // 2. Scale & expand card smoothly to fill 100vw x 100vh with power2.out decelerating curve
+    // =====================================================
+    // STEP 2: Envelope moves far back into deep 3D space & disappears
+    // =====================================================
+    if (envelopeRef.current) {
       tl.to(
-        cardRef.current,
+        envelopeRef.current,
+        {
+          z: -1400,
+          scale: 0.15,
+          opacity: 0,
+          filter: "blur(20px)",
+          duration: 1.4,
+          ease: "power2.inOut",
+        },
+        4.1
+      );
+    }
+
+    // =====================================================
+    // STEP 3: 3D Bi-Fold Wedding Card Appears & Unfolds ("changes the fold")
+    // =====================================================
+    if (bifoldCardRef.current) {
+      tl.fromTo(
+        bifoldCardRef.current,
+        { opacity: 0, scale: 0.7, z: -400, pointerEvents: "none" },
+        { opacity: 1, scale: 1, z: 0, pointerEvents: "auto", duration: 1.2, ease: "power2.out" },
+        5.1
+      );
+    }
+
+    // Unfold Left & Right Panels of Bi-Fold Card 180°
+    if (leftPanelRef.current) {
+      tl.to(
+        leftPanelRef.current,
+        {
+          rotateY: -180,
+          duration: 1.8,
+          ease: "power2.inOut",
+        },
+        6.1
+      );
+    }
+
+    if (rightPanelRef.current) {
+      tl.to(
+        rightPanelRef.current,
+        {
+          rotateY: 180,
+          duration: 1.8,
+          ease: "power2.inOut",
+        },
+        6.1
+      );
+    }
+
+    // =====================================================
+    // STEP 4: Fullscreen Expansion to Actual Website
+    // =====================================================
+    if (bifoldCardRef.current) {
+      tl.to(
+        bifoldCardRef.current,
         {
           position: "fixed",
           top: "0px",
@@ -323,55 +353,47 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
           maxHeight: "100vh",
           borderRadius: "0px",
           boxShadow: "none",
-          rotateX: 0,
-          rotateY: 0,
-          z: 0,
-          duration: 2.5,
+          duration: 1.8,
           ease: "power2.out",
         },
-        3.5
+        7.9
       );
     }
 
-    // Envelope body recedes & blurs into deep background
-    if (envelopeRef.current) {
+    if (bifoldInteriorCoverRef.current) {
       tl.to(
-        envelopeRef.current,
-        {
-          z: -900,
-          scale: 0.35,
-          opacity: 0,
-          filter: "blur(25px)",
-          duration: 1.8,
-          ease: "power2.inOut",
-        },
-        3.5
-      );
-    }
-
-    // Parchment Cover Overlay smoothly fades out to reveal live website content
-    if (parchmentCoverRef.current) {
-      tl.to(
-        parchmentCoverRef.current,
+        bifoldInteriorCoverRef.current,
         {
           opacity: 0,
-          duration: 1.6,
+          duration: 1.4,
           ease: "power2.inOut",
         },
-        3.7
+        8.1
       );
     }
 
-    // Dark stage overlay fades out
+    if (contentRef.current) {
+      tl.to(
+        contentRef.current,
+        {
+          opacity: 1,
+          pointerEvents: "auto",
+          duration: 1.4,
+          ease: "power2.inOut",
+        },
+        8.1
+      );
+    }
+
     if (overlayRef.current) {
       tl.to(
         overlayRef.current,
         {
           opacity: 0,
-          duration: 1.2,
+          duration: 1.4,
           ease: "power2.inOut",
         },
-        4.8
+        8.1
       );
     }
   });
@@ -382,123 +404,321 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
     if (onComplete) onComplete();
   }, [onComplete]);
 
-  if (isCompleted) {
-    return <div className="relative w-full min-h-screen">{children}</div>;
-  }
-
   return (
     <div className="relative w-full min-h-screen">
-      {/* Fixed Fullscreen 3D Intro Stage */}
-      <div
-        ref={overlayRef}
-        className="fixed inset-0 z-[300] select-none overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse 110% 100% at 50% 45%, #182238 0%, #0d1526 60%, #060914 100%)",
-        }}
+      {/* Live Website Content rendered directly in layout, initially hidden */}
+      <div 
+        ref={contentRef}
+        className="relative z-0 w-full min-h-screen opacity-0 pointer-events-none"
+        style={{ willChange: "opacity" }}
       >
-        {/* Dynamic Canvas Floating Golden Embers */}
-        <ParticleField density={95} />
+        {children}
+      </div>
 
-        {/* Falling Kerala Wedding Flowers */}
-        <FallingFlowers />
-
-        {/* Floating Gold Sparkles */}
-        <AmbientSparkles />
-
-        {/* Top Controls */}
-        <div className="absolute top-6 right-6 z-[350] flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setSoundEnabled(!soundEnabled)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-500/30 bg-slate-900/60 text-amber-200/80 backdrop-blur-md transition-all hover:scale-105 hover:border-amber-400 hover:text-amber-300"
-            title={soundEnabled ? "Mute audio" : "Enable audio"}
-          >
-            {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4 text-slate-500" />}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSkip}
-            className="group flex items-center gap-2 rounded-full border border-amber-500/30 bg-slate-900/60 px-4 py-2 text-xs font-medium tracking-wider text-amber-200/90 backdrop-blur-md transition-all hover:scale-105 hover:border-amber-400 hover:bg-slate-900/80 hover:text-amber-100"
-          >
-            <span>Skip Intro</span>
-            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-          </button>
-        </div>
-
-        {/* 3D Stage Container with overflow visible for unclipped extraction */}
+      {/* Fixed Fullscreen 3D Intro Stage Overlay */}
+      {!isCompleted && (
         <div
-          ref={containerRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="relative flex h-full w-full items-center justify-center p-4 overflow-visible"
-          style={{ perspective: "1200px" }}
+          ref={overlayRef}
+          className="fixed inset-0 z-[300] select-none overflow-hidden"
+          style={{
+            background:
+              "radial-gradient(ellipse 110% 100% at 50% 45%, #182238 0%, #0d1526 60%, #060914 100%)",
+            transition: "background 1s ease",
+          }}
         >
-          {/* Header Greeting */}
-          <div className="absolute top-8 left-1/2 z-10 -translate-x-1/2 text-center sm:top-12">
-            <p className="font-display text-xs italic tracking-[0.25em] text-amber-200/80 uppercase sm:text-sm">
-              You have received a wedding invitation
-            </p>
-            <h2 className="mt-1 font-display text-lg font-light tracking-[0.15em] text-amber-100/95 sm:text-xl">
-              Nithin &amp; Lakshmi
-            </h2>
+          {/* Dynamic Canvas Floating Golden Embers */}
+          <ParticleField density={95} />
+
+          {/* Falling Kerala Wedding Flowers */}
+          <FallingFlowers />
+
+          {/* Floating Gold Sparkles */}
+          <AmbientSparkles />
+
+          {/* Top Controls */}
+          <div className="absolute top-6 right-6 z-[350] flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-500/30 bg-slate-900/60 text-amber-200/80 backdrop-blur-md transition-all hover:scale-105 hover:border-amber-400 hover:text-amber-300"
+              title={soundEnabled ? "Mute audio" : "Enable audio"}
+            >
+              {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4 text-slate-500" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="group flex items-center gap-2 rounded-full border border-amber-500/30 bg-slate-900/60 px-4 py-2 text-xs font-medium tracking-wider text-amber-200/90 backdrop-blur-md transition-all hover:scale-105 hover:border-amber-400 hover:bg-slate-900/80 hover:text-amber-100"
+            >
+              <span>Skip Intro</span>
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            </button>
           </div>
 
-          {/* Master 3D Envelope Assembly */}
+          {/* 3D Stage Container */}
           <div
-            ref={envelopeRef}
-            className="relative select-none overflow-visible"
-            style={{
-              width: "min(92vw, 450px)",
-              height: "min(62vw, 295px)",
-              transformStyle: "preserve-3d",
-              willChange: "transform",
-            }}
+            ref={containerRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="relative flex h-full w-full items-center justify-center p-4 overflow-visible"
+            style={{ perspective: "1400px" }}
           >
-            {/* ==========================================
-                1. ENVELOPE BACK PANEL (z-index: 1)
-               ========================================== */}
-            <div
-              className="absolute inset-0 overflow-hidden rounded-md border border-amber-500/40"
-              style={{
-                zIndex: 1,
-                background:
-                  "linear-gradient(155deg, #faf7f2 0%, #f3ece0 50%, #e8decb 100%)",
-                boxShadow:
-                  "0 30px 80px -10px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.8) inset, 0 10px 25px rgba(197,160,89,0.15)",
-                transformStyle: "preserve-3d",
-              }}
-            >
-              {/* Kasavu Gold Woven Silk Inner Lining */}
-              <KasavuLiningPattern />
-
-              {/* Inner Cavity Depth Shadow */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  boxShadow: "inset 0 16px 35px rgba(140, 110, 50, 0.3)",
-                }}
-              />
+            {/* Header Greeting */}
+            <div className="absolute top-8 left-1/2 z-10 -translate-x-1/2 text-center sm:top-12">
+              <p className="font-display text-xs italic tracking-[0.25em] text-amber-200/80 uppercase sm:text-sm">
+                You have received a wedding invitation
+              </p>
+              <h2 className="mt-1 font-display text-lg font-light tracking-[0.15em] text-amber-100/95 sm:text-xl">
+                Nithin &amp; Lakshmi
+              </h2>
             </div>
 
-            {/* ==========================================
-                2. WEBSITE CARD COMPONENT (z-index: 2, jumps to 10 in Phase 3)
-               ========================================== */}
+            {/* STEP 1 & 2: MASTER 3D LIGHT ENVELOPE ASSEMBLY */}
             <div
-              ref={cardRef}
-              className="absolute inset-x-[3%] bottom-[3%] h-[94%] overflow-hidden rounded-lg bg-[#0d1526]"
+              ref={envelopeRef}
+              className="relative select-none overflow-visible z-10"
               style={{
-                zIndex: 2,
+                width: "min(92vw, 450px)",
+                height: "min(62vw, 295px)",
                 transformStyle: "preserve-3d",
-                boxShadow: "0 12px 35px rgba(0,0,0,0.45)",
-                willChange: "transform, width, height, top, left, border-radius, z-index",
+                willChange: "transform, opacity, filter",
               }}
             >
-              {/* Parchment Cover Card Overlay (Displayed inside envelope, fades out during Phase 3) */}
+              {/* ENVELOPE BACK PANEL */}
               <div
-                ref={parchmentCoverRef}
+                className="absolute inset-0 overflow-hidden rounded-md border border-amber-500/40"
+                style={{
+                  zIndex: 1,
+                  background:
+                    "linear-gradient(155deg, #faf7f2 0%, #f3ece0 50%, #e8decb 100%)",
+                  boxShadow:
+                    "0 30px 80px -10px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.8) inset, 0 10px 25px rgba(197,160,89,0.15)",
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                <KasavuLiningPattern />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    boxShadow: "inset 0 16px 35px rgba(140, 110, 50, 0.3)",
+                  }}
+                />
+              </div>
+
+              {/* ENVELOPE FRONT POCKET */}
+              <div
+                className="pointer-events-none absolute inset-0 overflow-hidden rounded-md"
+                style={{
+                  zIndex: 3,
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                <svg
+                  className="h-full w-full drop-shadow-lg"
+                  viewBox="0 0 450 295"
+                  preserveAspectRatio="none"
+                  fill="none"
+                >
+                  <defs>
+                    <linearGradient id="pocketBaseGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#f8f3ea" />
+                      <stop offset="50%" stopColor="#eee4d3" />
+                      <stop offset="100%" stopColor="#e0d2bc" />
+                    </linearGradient>
+
+                    <linearGradient id="goldSeamGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="transparent" />
+                      <stop offset="50%" stopColor="rgba(197,160,89,0.9)" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+
+                    <filter id="pocketShadow" x="-10%" y="-10%" width="120%" height="120%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#000" floodOpacity="0.25" />
+                    </filter>
+                  </defs>
+
+                  <path
+                    d="M 0,0 L 210,147 L 0,295 Z"
+                    fill="url(#pocketBaseGrad)"
+                    fillOpacity="0.98"
+                    stroke="rgba(197,160,89,0.3)"
+                    strokeWidth="1"
+                  />
+
+                  <path
+                    d="M 450,0 L 240,147 L 450,295 Z"
+                    fill="url(#pocketBaseGrad)"
+                    fillOpacity="0.98"
+                    stroke="rgba(197,160,89,0.3)"
+                    strokeWidth="1"
+                  />
+
+                  <path
+                    d="M 0,295 L 450,295 L 450,275 C 450,275 330,192 252,147 C 234,137 216,137 198,147 C 120,192 0,275 0,275 Z"
+                    fill="url(#pocketBaseGrad)"
+                    filter="url(#pocketShadow)"
+                    stroke="rgba(197,160,89,0.4)"
+                    strokeWidth="1"
+                  />
+
+                  <path
+                    d="M 0,275 C 120,192 198,147 225,138 C 252,147 330,192 450,275"
+                    stroke="url(#goldSeamGrad)"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </div>
+
+              {/* ENVELOPE TOP FLAP */}
+              <div
+                ref={topFlapRef}
+                className="absolute top-0 left-0 h-[54%] w-full"
+                style={{
+                  zIndex: 4,
+                  transformOrigin: "top center",
+                  transformStyle: "preserve-3d",
+                  willChange: "transform",
+                }}
+              >
+                {/* Flap Outer Front Face */}
+                <div
+                  className="absolute inset-0"
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <svg
+                    className="h-full w-full drop-shadow-xl"
+                    viewBox="0 0 450 160"
+                    preserveAspectRatio="none"
+                    fill="none"
+                  >
+                    <defs>
+                      <linearGradient id="topFlapGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#faf6ee" />
+                        <stop offset="70%" stopColor="#f2e7d5" />
+                        <stop offset="100%" stopColor="#e5d5be" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M 0,0 L 450,0 L 450,5 C 450,5 330,94 252,145 C 234,156 216,156 198,145 C 120,94 0,5 0,5 Z"
+                      fill="url(#topFlapGrad)"
+                      stroke="rgba(197,160,89,0.4)"
+                      strokeWidth="1"
+                    />
+                    <path
+                      d="M 0,5 C 120,94 198,145 225,153 C 252,145 330,94 450,5"
+                      stroke="rgba(197,160,89,0.85)"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </div>
+
+                {/* Flap Inner Back Face */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backfaceVisibility: "hidden",
+                    transform: "rotateX(180deg)",
+                  }}
+                >
+                  <svg
+                    className="h-full w-full"
+                    viewBox="0 0 450 160"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M 0,0 L 450,0 L 450,5 C 450,5 330,94 252,145 C 234,156 216,156 198,145 C 120,94 0,5 0,5 Z"
+                      fill="#efe2ca"
+                    />
+                  </svg>
+                  <div
+                    className="absolute inset-0 opacity-90"
+                    style={{
+                      clipPath: "polygon(0 0, 100% 0, 100% 3%, 50% 100%, 0 3%)",
+                    }}
+                  >
+                    <KasavuLiningPattern />
+                  </div>
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute top-0 inset-x-0 h-4 bg-gradient-to-b from-amber-950/30 to-transparent"
+                  />
+                </div>
+              </div>
+
+              {/* PEEL & STICK HEART SEAL */}
+              <div
+                ref={waxSealRef}
+                onClick={triggerOpen}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    triggerOpen();
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label="Peel & Seal Heart Sticker to open invitation"
+                className={`absolute top-[48%] left-1/2 z-[50] h-14 w-14 -translate-x-1/2 -translate-y-1/2 outline-none cursor-pointer pointer-events-auto sm:h-16 sm:w-16 ${
+                  isOpening ? "pointer-events-none" : ""
+                }`}
+                style={{
+                  transformStyle: "preserve-3d",
+                  transition: "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                }}
+              >
+                <PeelAndStickHeartSeal />
+              </div>
+
+              {/* Shockwave Aura Ring */}
+              <div
+                ref={shockwaveRef}
+                aria-hidden
+                className="pointer-events-none absolute top-[48%] left-1/2 z-[5] h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-500/80 opacity-0 sm:h-16 sm:w-16"
+                style={{
+                  boxShadow: "0 0 25px rgba(225, 29, 72, 0.8)",
+                }}
+              />
+
+              {/* 3D Wax Shatter Particles */}
+              <div
+                ref={particlesGroupRef}
+                aria-hidden
+                className="pointer-events-none absolute top-[48%] left-1/2 z-30 h-0 w-0"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {fragments.map((f) => (
+                  <div
+                    key={f.id}
+                    className="absolute top-0 left-0 -ml-1.5 -mt-1.5 rounded-full"
+                    style={{
+                      width: `${10 * f.scale}px`,
+                      height: `${10 * f.scale}px`,
+                      background:
+                        "radial-gradient(circle at 35% 35%, #f43f5e, #be123c 60%, #881337 100%)",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.5)",
+                      border: "1px solid rgba(254,240,138,0.7)",
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* STEP 3 & 4: 3D BI-FOLD WEDDING CARD ASSEMBLY */}
+            <div
+              ref={bifoldCardRef}
+              className="absolute opacity-0 pointer-events-none select-none overflow-hidden rounded-lg bg-[#0d1526]"
+              style={{
+                width: "min(92vw, 540px)",
+                height: "min(65vw, 350px)",
+                transformStyle: "preserve-3d",
+                boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
+                willChange: "transform, width, height, top, left, border-radius, opacity",
+              }}
+            >
+              {/* INTERIOR UNFOLDED CARD COVER */}
+              <div
+                ref={bifoldInteriorCoverRef}
                 className="absolute inset-0 z-20 flex flex-col items-center justify-between p-6 text-center"
                 style={{
                   background:
@@ -506,25 +726,11 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
                   border: "1px solid rgba(197, 160, 89, 0.45)",
                 }}
               >
-                {/* Gold Hairline Frame */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-2 border border-amber-600/35 rounded-sm"
                 />
 
-                {/* Light Reflection Sheen */}
-                <div
-                  ref={cardShineRef}
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 z-30 opacity-45"
-                  style={{
-                    background:
-                      "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.9) 50%, transparent 80%)",
-                    transform: "translateX(-120%)",
-                  }}
-                />
-
-                {/* Card Header Malayalam Title */}
                 <div className="relative z-10 pt-1">
                   <p className="font-malayalam text-xs font-semibold tracking-[0.2em] text-amber-900/90 sm:text-sm">
                     വിവാഹ ക്ഷണം
@@ -532,13 +738,11 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
                   <div className="mx-auto mt-1 h-0.5 w-10 bg-gradient-to-r from-transparent via-amber-600/60 to-transparent" />
                 </div>
 
-                {/* Card Main Body */}
                 <div className="relative z-10 my-auto flex flex-col items-center gap-1 sm:gap-1.5">
                   <span className="font-display text-[11px] tracking-[0.18em] text-amber-900/75 uppercase sm:text-xs">
                     Together with their families
                   </span>
 
-                  {/* Oil Lamp / Radha Krishna Crest */}
                   <div className="my-1 flex items-center justify-center opacity-90">
                     <svg className="h-7 w-16 text-amber-800" viewBox="0 0 100 30" fill="none">
                       <path
@@ -555,252 +759,131 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
                     </svg>
                   </div>
 
-                  <h1 className="font-display text-xl font-bold tracking-wide text-amber-950 sm:text-2xl">
+                  <h1 className="font-display text-2xl font-bold tracking-wide text-amber-950 sm:text-3xl">
                     Nithin &amp; Lakshmi
                   </h1>
 
-                  <p className="font-display text-[11px] italic tracking-wider text-amber-900/80 sm:text-xs">
-                    request the pleasure of your company
+                  <p className="font-display text-xs italic tracking-wider text-amber-900/80 sm:text-sm">
+                    request the pleasure of your company to celebrate their wedding
                   </p>
                 </div>
 
-                {/* Card Footer Details */}
                 <div className="relative z-10 w-full border-t border-amber-800/20 pt-2">
-                  <p className="font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-amber-900 sm:text-xs">
+                  <p className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-amber-900 sm:text-sm">
                     Saturday · 12 September 2026
                   </p>
-                  <p className="font-body text-[10px] tracking-widest text-amber-800/80 uppercase">
+                  <p className="font-body text-[10px] tracking-widest text-amber-800/80 uppercase sm:text-xs">
                     Kochi · Kerala
                   </p>
                 </div>
               </div>
 
-              {/* Live Interactive Website Component Container */}
-              <div className="relative h-full w-full overflow-hidden">
-                {children}
-              </div>
-            </div>
-
-            {/* ==========================================
-                3. ENVELOPE FRONT POCKET (z-index: 3)
-               ========================================== */}
-            <div
-              className="pointer-events-none absolute inset-0 overflow-hidden rounded-md"
-              style={{
-                zIndex: 3,
-                transformStyle: "preserve-3d",
-              }}
-            >
-              <svg
-                className="h-full w-full drop-shadow-lg"
-                viewBox="0 0 450 295"
-                preserveAspectRatio="none"
-                fill="none"
-              >
-                <defs>
-                  <linearGradient id="pocketBaseGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#f8f3ea" />
-                    <stop offset="50%" stopColor="#eee4d3" />
-                    <stop offset="100%" stopColor="#e0d2bc" />
-                  </linearGradient>
-
-                  <linearGradient id="goldSeamGrad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="transparent" />
-                    <stop offset="50%" stopColor="rgba(197,160,89,0.9)" />
-                    <stop offset="100%" stopColor="transparent" />
-                  </linearGradient>
-
-                  <filter id="pocketShadow" x="-10%" y="-10%" width="120%" height="120%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#000" floodOpacity="0.25" />
-                  </filter>
-                </defs>
-
-                {/* Left Side Fold */}
-                <path
-                  d="M 0,0 L 210,147 L 0,295 Z"
-                  fill="url(#pocketBaseGrad)"
-                  fillOpacity="0.98"
-                  stroke="rgba(197,160,89,0.3)"
-                  strokeWidth="1"
-                />
-
-                {/* Right Side Fold */}
-                <path
-                  d="M 450,0 L 240,147 L 450,295 Z"
-                  fill="url(#pocketBaseGrad)"
-                  fillOpacity="0.98"
-                  stroke="rgba(197,160,89,0.3)"
-                  strokeWidth="1"
-                />
-
-                {/* Bottom Luxury Rounded V Fold */}
-                <path
-                  d="M 0,295 L 450,295 L 450,275 C 450,275 330,192 252,147 C 234,137 216,137 198,147 C 120,192 0,275 0,275 Z"
-                  fill="url(#pocketBaseGrad)"
-                  filter="url(#pocketShadow)"
-                  stroke="rgba(197,160,89,0.4)"
-                  strokeWidth="1"
-                />
-
-                {/* Gold Seam Filigree Piping along Pocket Edge */}
-                <path
-                  d="M 0,275 C 120,192 198,147 225,138 C 252,147 330,192 450,275"
-                  stroke="url(#goldSeamGrad)"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-
-            {/* ==========================================
-                4. ENVELOPE TOP FLAP (z-index: 4, drops to 0 on 180° fold)
-               ========================================== */}
-            <div
-              ref={topFlapRef}
-              className="absolute top-0 left-0 h-[54%] w-full"
-              style={{
-                zIndex: 4,
-                transformOrigin: "top center",
-                transformStyle: "preserve-3d",
-                willChange: "transform, z-index",
-              }}
-            >
-              {/* Flap Outer Front Face */}
+              {/* =====================================================
+                  3D BI-FOLD DOORS (Folded in two, opens outward)
+                 ===================================================== */}
+              {/* LEFT FOLDING PANEL (-180deg rotation on Y) */}
               <div
-                className="absolute inset-0"
-                style={{ backfaceVisibility: "hidden" }}
-              >
-                <svg
-                  className="h-full w-full drop-shadow-xl"
-                  viewBox="0 0 450 160"
-                  preserveAspectRatio="none"
-                  fill="none"
-                >
-                  <defs>
-                    <linearGradient id="topFlapGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#faf6ee" />
-                      <stop offset="70%" stopColor="#f2e7d5" />
-                      <stop offset="100%" stopColor="#e5d5be" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M 0,0 L 450,0 L 450,5 C 450,5 330,94 252,145 C 234,156 216,156 198,145 C 120,94 0,5 0,5 Z"
-                    fill="url(#topFlapGrad)"
-                    stroke="rgba(197,160,89,0.4)"
-                    strokeWidth="1"
-                  />
-                  <path
-                    d="M 0,5 C 120,94 198,145 225,153 C 252,145 330,94 450,5"
-                    stroke="rgba(197,160,89,0.85)"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </div>
-
-              {/* Flap Inner Back Face (Revealed on 180° fold, showing Kasavu Gold Silk Lining) */}
-              <div
-                className="absolute inset-0"
+                ref={leftPanelRef}
+                className="absolute top-0 left-0 z-30 h-full w-1/2"
                 style={{
-                  backfaceVisibility: "hidden",
-                  transform: "rotateX(180deg)",
+                  transformOrigin: "left center",
+                  transformStyle: "preserve-3d",
+                  willChange: "transform",
                 }}
               >
-                <svg
-                  className="h-full w-full"
-                  viewBox="0 0 450 160"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M 0,0 L 450,0 L 450,5 C 450,5 330,94 252,145 C 234,156 216,156 198,145 C 120,94 0,5 0,5 Z"
-                    fill="#efe2ca"
-                  />
-                </svg>
+                {/* Left Panel Front Face */}
                 <div
-                  className="absolute inset-0 opacity-90"
+                  className="absolute inset-0 flex flex-col items-end justify-center p-4 border-r border-amber-600/30"
                   style={{
-                    clipPath: "polygon(0 0, 100% 0, 100% 3%, 50% 100%, 0 3%)",
+                    backfaceVisibility: "hidden",
+                    background:
+                      "linear-gradient(160deg, #faf7f2 0%, #f3ece0 60%, #e7ddc9 100%)",
+                    boxShadow: "inset 0 0 15px rgba(197, 160, 89, 0.2)",
+                  }}
+                >
+                  <div className="absolute inset-2 border border-amber-600/35 rounded-l-md pointer-events-none" />
+                  <div className="pr-2 text-right">
+                    <p className="font-display text-[10px] tracking-[0.2em] text-amber-900/70 uppercase">
+                      With Joyful Hearts
+                    </p>
+                    <p className="font-display text-base font-bold text-amber-950">
+                      Nithin
+                    </p>
+                  </div>
+                </div>
+
+                {/* Left Panel Inner Back Face */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backfaceVisibility: "hidden",
+                    transform: "rotateY(180deg)",
+                    background: "#efe2ca",
                   }}
                 >
                   <KasavuLiningPattern />
                 </div>
+              </div>
+
+              {/* RIGHT FOLDING PANEL (180deg rotation on Y) */}
+              <div
+                ref={rightPanelRef}
+                className="absolute top-0 right-0 z-30 h-full w-1/2"
+                style={{
+                  transformOrigin: "right center",
+                  transformStyle: "preserve-3d",
+                  willChange: "transform",
+                }}
+              >
+                {/* Right Panel Front Face */}
                 <div
-                  aria-hidden
-                  className="pointer-events-none absolute top-0 inset-x-0 h-4 bg-gradient-to-b from-amber-950/30 to-transparent"
-                />
+                  className="absolute inset-0 flex flex-col items-start justify-center p-4 border-l border-amber-600/30"
+                  style={{
+                    backfaceVisibility: "hidden",
+                    background:
+                      "linear-gradient(160deg, #faf7f2 0%, #f3ece0 60%, #e7ddc9 100%)",
+                    boxShadow: "inset 0 0 15px rgba(197, 160, 89, 0.2)",
+                  }}
+                >
+                  <div className="absolute inset-2 border border-amber-600/35 rounded-r-md pointer-events-none" />
+                  <div className="pl-2 text-left">
+                    <p className="font-display text-[10px] tracking-[0.2em] text-amber-900/70 uppercase">
+                      Invite You To
+                    </p>
+                    <p className="font-display text-base font-bold text-amber-950">
+                      Lakshmi
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Panel Inner Back Face */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backfaceVisibility: "hidden",
+                    transform: "rotateY(180deg)",
+                    background: "#efe2ca",
+                  }}
+                >
+                  <KasavuLiningPattern />
+                </div>
               </div>
             </div>
 
-            {/* ==========================================
-                5. PEEL & STICK HEART SEAL (z-index: 5)
-               ========================================== */}
-            <div
-              ref={waxSealRef}
-              onClick={triggerOpen}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  triggerOpen();
-                }
-              }}
-              tabIndex={0}
-              role="button"
-              aria-label="Peel & Seal Heart Sticker to open invitation"
-              className={`absolute top-[48%] left-1/2 z-[5] h-14 w-14 -translate-x-1/2 -translate-y-1/2 outline-none sm:h-16 sm:w-16 ${
-                isOpening ? "pointer-events-none" : "cursor-pointer"
-              }`}
-              style={{
-                transformStyle: "preserve-3d",
-                transition: "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-              }}
+            {/* Bottom Interactive Hint */}
+            <p
+              ref={hintTextRef}
+              className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 font-display text-xs uppercase tracking-[0.35em] text-amber-200/80 sm:bottom-12 sm:text-sm"
             >
-              <PeelAndStickHeartSeal />
-            </div>
-
-            {/* Shockwave Aura Ring Pulse */}
-            <div
-              ref={shockwaveRef}
-              aria-hidden
-              className="pointer-events-none absolute top-[48%] left-1/2 z-[5] h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-500/80 opacity-0 sm:h-16 sm:w-16"
-              style={{
-                boxShadow: "0 0 25px rgba(225, 29, 72, 0.8)",
-              }}
-            />
-
-            {/* 3D Wax Shatter Physics Particles */}
-            <div
-              ref={particlesGroupRef}
-              aria-hidden
-              className="pointer-events-none absolute top-[48%] left-1/2 z-30 h-0 w-0"
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              {fragments.map((f) => (
-                <div
-                  key={f.id}
-                  className="absolute top-0 left-0 -ml-1.5 -mt-1.5 rounded-full"
-                  style={{
-                    width: `${10 * f.scale}px`,
-                    height: `${10 * f.scale}px`,
-                    background:
-                      "radial-gradient(circle at 35% 35%, #f43f5e, #be123c 60%, #881337 100%)",
-                    boxShadow: "0 2px 5px rgba(0,0,0,0.5)",
-                    border: "1px solid rgba(254,240,138,0.7)",
-                  }}
-                />
-              ))}
-            </div>
+              <span className="inline-flex items-center gap-2">
+                <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
+                Tap the Heart Seal to Open
+                <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
+              </span>
+            </p>
           </div>
-
-          {/* Bottom Interactive Hint */}
-          <p
-            ref={hintTextRef}
-            className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 font-display text-xs uppercase tracking-[0.35em] text-amber-200/80 sm:bottom-12 sm:text-sm"
-          >
-            <span className="inline-flex items-center gap-2">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
-              Tap the Heart Seal to Open
-              <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
-            </span>
-          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 }
