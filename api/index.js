@@ -27,8 +27,8 @@ function getMimeType(filePath) {
 export default async function handler(req, res) {
   try {
     let rawUrl = req.url || '/';
-    if (rawUrl.startsWith('/api/index.js')) {
-      rawUrl = rawUrl.replace(/^\/api\/index\.js/, '') || '/';
+    if (rawUrl.startsWith('/api/index')) {
+      rawUrl = rawUrl.replace(/^\/api\/index/, '') || '/';
     }
     if (!rawUrl.startsWith('/')) {
       rawUrl = '/' + rawUrl;
