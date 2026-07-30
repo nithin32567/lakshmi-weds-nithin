@@ -50,10 +50,11 @@ export default async function handler(req, res) {
     bodyChunks.push(chunk);
   }
 
+  const isGetOrHead = req.method === 'GET' || req.method === 'HEAD';
   const request = new Request(requestUrl.toString(), {
     method: req.method,
     headers: req.headers,
-    body: bodyChunks.length ? Buffer.concat(bodyChunks) : undefined,
+    body: (!isGetOrHead && bodyChunks.length > 0) ? Buffer.concat(bodyChunks) : undefined,
   });
 
   const response = await server.fetch(request, undefined, undefined);
