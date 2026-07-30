@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 
+import { EnvelopeIntro } from "@/components/wedding/EnvelopeIntro";
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
 
-const EnvelopeIntro = lazy(() => import("@/components/wedding/EnvelopeIntro").then((m) => ({ default: m.EnvelopeIntro })));
 const CustomCursor = lazy(() => import("@/components/wedding/CustomCursor").then((m) => ({ default: m.CustomCursor })));
 const Footer = lazy(() => import("@/components/wedding/Footer").then((m) => ({ default: m.Footer })));
 const Gallery = lazy(() => import("@/components/wedding/Gallery").then((m) => ({ default: m.Gallery })));
@@ -37,46 +36,28 @@ export const Route = createFileRoute("/")({
 });
 
 export function Index() {
-  const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  return (
-    <>
-      {/* Sealed wax-seal envelope intro — gate before the site */}
-      {isMounted && !envelopeOpened && (
-        <Suspense fallback={null}>
-          <EnvelopeIntro onComplete={() => setEnvelopeOpened(true)} />
-        </Suspense>
-      )}
+  if (!isMounted) return null;
 
-      {/* Main website — fades in with a soft scale after envelope is dismissed */}
-      <AnimatePresence>
-        {isMounted && envelopeOpened && (
-          <motion.div
-            key="site-content"
-            initial={{ opacity: 0, scale: 1.018 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Suspense fallback={null}>
-              <SmoothScroll>
-                <CustomCursor />
-                <Navbar />
-                <Hero />
-                <InvitationCard />
-                <LoveStory />
-                <Gallery />
-                <RSVP />
-                <Footer />
-              </SmoothScroll>
-            </Suspense>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+  return (
+    <Suspense fallback={null}>
+      <EnvelopeIntro>
+        <SmoothScroll>
+          <CustomCursor />
+          <Navbar />
+          <Hero />
+          <InvitationCard />
+          <LoveStory />
+          <Gallery />
+          <RSVP />
+          <Footer />
+        </SmoothScroll>
+      </EnvelopeIntro>
+    </Suspense>
   );
 }
