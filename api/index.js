@@ -25,46 +25,64 @@ function getMimeType(filePath) {
 }
 
 export default async function handler(req, res) {
-  const protocol = req.headers['x-forwarded-proto'] || 'https';
-  const host = req.headers.host || 'localhost';
-  const requestUrl = new URL(req.url || '/', `${protocol}://${host}`);
-  const pathname = requestUrl.pathname;
+  try {
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers.host || 'localhost';
+    const requestUrl = new URL(req.url || '/', `${protocol}://${host}`);
+    const pathname = requestUrl.pathname;
 
-  if (PUBLIC_FILES.has(pathname) || pathname.startsWith('/assets/')) {
-    const filePath = pathname === '/favicon.ico' || pathname === '/robots.txt'
-      ? path.join(__dirname, '..', pathname)
-      : path.join(CLIENT_ASSETS_DIR, pathname.slice('/assets/'.length));
+    if (PUBLIC_FILES.has(pathname) || pathname.startsWith('/assets/')) {
+      const filePath = pathname === '/favicon.ico' || pathname === '/robots.txt'
+        ? path.join(__dirname, '..', pathname)
+        : path.join(CLIENT_ASSETS_DIR, pathname.slice('/assets/'.length));
 
-    try {
-      const file = await fs.readFile(filePath);
-      res.status(200);
-      res.setHeader('content-type', getMimeType(filePath));
-      return res.send(file);
-    } catch (error) {
-      return res.status(404).send('Not found');
+      try {
+        const file = await fs.readFile(filePath);
+        res.status(200);
+        res.setHeader('content-type', getMimeType(filePath));
+        return res.send(file);
+      } catch (error) {
+        return res.status(404).send('Not found');
+      }
     }
+
+    const bodyChunks = [];
+    for await (const chunk of req) {
+      bodyChunks.push(chunk);
+    }
+
+    const headers = new Headers();
+    for (const [key, value] of Object.entries(req.headers)) {
+      if (value !== undefined && key !== 'connection' && key !== 'transfer-encoding') {
+        if (Array.isArray(value)) {
+          for (const v of value) headers.append(key, v);
+        } else {
+          headers.set(key, value);
+        }
+      }
+    }
+
+    const isGetOrHead = req.method === 'GET' || req.method === 'HEAD';
+    const request = new Request(requestUrl.toString(), {
+      method: req.method,
+      headers: headers,
+      body: (!isGetOrHead && bodyChunks.length > 0) ? Buffer.concat(bodyChunks) : undefined,
+    });
+
+    const response = await server.fetch(request, undefined, undefined);
+
+    res.status(response.status);
+    response.headers.forEach((value, key) => {
+      if (key.toLowerCase() === 'transfer-encoding') return;
+      res.setHeader(key, value);
+    });
+
+    const responseBody = await response.arrayBuffer();
+    return res.send(Buffer.from(responseBody));
+  } catch (err) {
+    console.error('Vercel Handler Error:', err);
+    res.status(500);
+    res.setHeader('content-type', 'text/html; charset=utf-8');
+    return res.send(`<h1>Server Error</h1><pre>${err?.stack || err?.message || err}</pre>`);
   }
-
-  const bodyChunks = [];
-  for await (const chunk of req) {
-    bodyChunks.push(chunk);
-  }
-
-  const isGetOrHead = req.method === 'GET' || req.method === 'HEAD';
-  const request = new Request(requestUrl.toString(), {
-    method: req.method,
-    headers: req.headers,
-    body: (!isGetOrHead && bodyChunks.length > 0) ? Buffer.concat(bodyChunks) : undefined,
-  });
-
-  const response = await server.fetch(request, undefined, undefined);
-
-  res.status(response.status);
-  response.headers.forEach((value, key) => {
-    if (key.toLowerCase() === 'transfer-encoding') return;
-    res.setHeader(key, value);
-  });
-
-  const responseBody = await response.arrayBuffer();
-  res.send(Buffer.from(responseBody));
 }
