@@ -4,8 +4,10 @@ import { useGSAP } from "@gsap/react";
 import { Sparkles, Volume2, VolumeX, ArrowRight } from "lucide-react";
 import { ParticleField } from "@/components/wedding/ParticleField";
 
-// Register GSAP React plugin if available
-gsap.registerPlugin(useGSAP);
+// Register GSAP React plugin if available in browser
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(useGSAP);
+}
 
 interface EnvelopeIntroProps {
   onComplete: () => void;

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
@@ -14,7 +14,7 @@ const LoveStory = lazy(() => import("@/components/wedding/LoveStory").then((m) =
 const Navbar = lazy(() => import("@/components/wedding/Navbar").then((m) => ({ default: m.Navbar })));
 const RSVP = lazy(() => import("@/components/wedding/RSVP").then((m) => ({ default: m.RSVP })));
 
-export const Route = createFileRoute("/")(  {
+export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Nithin & Lakshmi — Kerala Wedding · 12 September 2026" },
@@ -38,17 +38,22 @@ export const Route = createFileRoute("/")(  {
 
 export function Index() {
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <>
       {/* Sealed wax-seal envelope intro — gate before the site */}
-      {!envelopeOpened && (
+      {isMounted && !envelopeOpened && (
         <EnvelopeIntro onComplete={() => setEnvelopeOpened(true)} />
       )}
 
       {/* Main website — fades in with a soft scale after envelope is dismissed */}
       <AnimatePresence>
-        {envelopeOpened && (
+        {isMounted && envelopeOpened && (
           <motion.div
             key="site-content"
             initial={{ opacity: 0, scale: 1.018 }}
