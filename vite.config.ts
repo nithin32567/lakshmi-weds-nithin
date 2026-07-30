@@ -4,7 +4,15 @@ import react from '@vitejs/plugin-react';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 
 export default defineConfig({
-  plugins: [tailwindcss(), tanstackStart(), react()],
+  plugins: [
+    tailwindcss(),
+    tanstackStart({
+      prerender: {
+        routes: ['/'],
+      },
+    }),
+    react(),
+  ],
   resolve: {
     tsconfigPaths: true,
   },

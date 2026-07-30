@@ -1,7 +1,15 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/client",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "version": 2,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "dist/**"
+    }
+  },
+  "routes": [
+    { "src": "^/assets/(.*)$", "dest": "/dist/client/assets/$1" },
+    { "src": "^/favicon.ico$", "dest": "/dist/client/favicon.ico" },
+    { "src": "^/robots.txt$", "dest": "/dist/client/robots.txt" },
+    { "src": "^/api/(.*)$", "dest": "/api/$1" },
+    { "src": "^/(.*)$", "dest": "/api/index.js" }
   ]
 }
