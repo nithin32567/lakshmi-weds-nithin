@@ -46,10 +46,10 @@ export function Index() {
         <Hero />
         <InvitationCard />
         <LoveStory />
-        <Events />
-        <SadyaMenu />
+        {/* <Events /> */}
+        {/* <SadyaMenu /> */}
         <Gallery />
-        <DigitalPass />
+        {/* <DigitalPass /> */}
         <RSVP />
         <Footer />
       </SmoothScroll>

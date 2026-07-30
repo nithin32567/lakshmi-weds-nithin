@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
+import krishnaRadhaImg from "@/assets/krishna-radha.png";
 
 export function InvitationCard() {
   return (
-    <section id="invitation" className="relative overflow-hidden bg-ivory py-24 md:py-32">
+    <section id="invitation" className="relative overflow-hidden bg-ivory py-24 md:py-22">
       <div
         aria-hidden
         className="absolute inset-0 opacity-[0.05]"
@@ -16,24 +17,41 @@ export function InvitationCard() {
         whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="card-parchment relative mx-auto max-w-2xl rounded-lg px-8 py-14 text-center md:px-16 md:py-20"
+        className="card-parchment relative mx-auto max-w-2xl rounded-lg px-8 py-4 text-center md:px-16 md:py-16"
       >
-        <p className="font-malayalam text-xs font-bold tracking-[0.3em] text-gold md:text-sm">
+        {/* Radha-Krishna blessing crest */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1.5 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mx-auto mb-4 w-62 md:mb-6 md:w-84"
+        >
+          <img
+            src={krishnaRadhaImg}
+            alt="Radha and Krishna Line Art Illustration"
+            className="h-auto w-full mix-blend-multiply"
+            style={{
+              filter: "sepia(0.6) brightness(0.9) opacity(0.85) hue-rotate(-10deg)",
+            }}
+          />
+        </motion.div>
+        <p className="font-malayalam text-xs font-bold text-gold md:text-xl">
           വിവാഹ ക്ഷണം
         </p>
         <p className="mt-8 text-sm leading-relaxed text-muted-foreground md:text-base">
           With the blessings of the Almighty and our families,
           <br />
-          Mr. &amp; Mrs. Ramesh Menon and Mr. &amp; Mrs. Suresh Nair
+          Mr. &amp; Mrs. Prathapan &amp; Mrs. Santhosh
           <br />
           joyfully invite you to the wedding of their children
         </p>
 
         <h2 className="mt-8 font-display text-5xl font-semibold text-teak md:text-6xl">
-          Nithin Menon
+          Nithin Prathapan
         </h2>
         <p className="my-3 font-hand text-3xl text-gold">weds</p>
-        <h2 className="font-display text-5xl font-semibold text-teak md:text-6xl">Lakshmi Nair</h2>
+        <h2 className="font-display text-5xl font-semibold text-teak md:text-6xl">Lakshmi Santhosh</h2>
 
         <div className="mx-auto my-10 h-px w-40 bg-gradient-to-r from-transparent via-gold to-transparent" />
 

@@ -63,7 +63,8 @@ export function Hero() {
           transition={{ delay: 0.55, duration: 0.8 }}
           className="mx-auto mt-6 max-w-xl text-sm uppercase tracking-[0.35em] text-ivory/65 sm:text-base"
         >
-          12 · September · 2026 — Kochi, Kerala
+          12 · September · 2026 — Chalakkudi, Kerala
+
         </motion.p>
 
         <motion.div
