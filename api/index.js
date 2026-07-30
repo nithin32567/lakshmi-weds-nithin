@@ -40,8 +40,8 @@ export default async function handler(req, res) {
     const pathname = requestUrl.pathname;
 
     if (PUBLIC_FILES.has(pathname) || pathname.startsWith('/assets/')) {
-      const filePath = pathname === '/favicon.ico' || pathname === '/robots.txt'
-        ? path.join(__dirname, '..', pathname)
+      const filePath = PUBLIC_FILES.has(pathname)
+        ? path.join(__dirname, '..', 'dist', 'client', pathname)
         : path.join(CLIENT_ASSETS_DIR, pathname.slice('/assets/'.length));
 
       try {
