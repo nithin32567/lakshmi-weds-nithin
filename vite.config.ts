@@ -9,30 +9,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   build: {
-    chunkSizeWarningLimit: 1000,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('three')) {
-              return 'vendor-three';
-            }
-            if (id.includes('lucide-react')) {
-              return 'vendor-lucide';
-            }
-            if (id.includes('motion') || id.includes('framer-motion')) {
-              return 'vendor-motion';
-            }
-            if (id.includes('gsap')) {
-              return 'vendor-gsap';
-            }
-            if (id.includes('@tanstack')) {
-              return 'vendor-tanstack';
-            }
-          }
-        },
-      },
-    },
+    chunkSizeWarningLimit: 1500,
   },
   server: {
     port: 4173,
