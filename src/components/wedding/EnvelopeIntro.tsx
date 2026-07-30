@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Sparkles, Volume2, VolumeX, ArrowRight } from "lucide-react";
+import { ParticleField } from "@/components/wedding/ParticleField";
 
 // Register GSAP React plugin if available
 gsap.registerPlugin(useGSAP);
@@ -12,12 +13,13 @@ interface EnvelopeIntroProps {
 
 /**
  * Web Audio API helper for procedural wax seal snap & pop sound effect.
- * Requires no external audio files, works instantly and reliably across modern browsers.
  */
 function playProceduralWaxSnap(soundEnabled: boolean) {
   if (!soundEnabled || typeof window === "undefined") return;
   try {
-    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!AudioCtx) return;
     const ctx = new AudioCtx();
     if (ctx.state === "suspended") {
@@ -63,19 +65,16 @@ function playProceduralWaxSnap(soundEnabled: boolean) {
     osc.start();
     osc.stop(ctx.currentTime + 0.12);
   } catch {
-    // Graceful fallback if audio context blocked by browser policy
+    // Graceful fallback
   }
 }
 
 /**
- * World-Class 3D Envelope Opening Experience
- * Multi-phase GSAP timeline choreography:
- *   Phase 1: Floating 3D Idle with interactive tilt & high-realism Wax Seal
- *   Phase 2: Wax Seal Shatter with 3D physics fragment vectors & shockwave
- *   Phase 3: 3D Top Flap Fold Back (-180deg rotateX) exposing Kasavu Gold inner lining
- *   Phase 4: Wedding Invitation Card emerges from envelope cavity with dynamic light sheen
- *   Phase 5: 3D Jump Out expansion — Viewport zooms in while envelope recedes with blur, 
- *            card aligns flush fullscreen and unmasks to main website
+ * World-Class 3D Light-Theme Envelope Opening Experience
+ * Featuring:
+ *   - Luxury Light Theme Kerala Ivory & Kasavu Gold Envelope
+ *   - Peel & Stick Small-Radius Heart Seal with embossed "L & N" initials
+ *   - 5-Phase GSAP Master Timeline Choreography (Idle 3D tilt, Peel/Shatter, Flap Fold, Card Rise, 3D Jump-Out)
  */
 export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,18 +96,18 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
 
   // Generate 3D shatter particle parameters once
   useEffect(() => {
-    const frags = Array.from({ length: 24 }, (_, i) => {
-      const angle = (i / 24) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
-      const dist = 90 + Math.random() * 140;
+    const frags = Array.from({ length: 20 }, (_, i) => {
+      const angle = (i / 20) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+      const dist = 70 + Math.random() * 110;
       return {
         id: i,
         x: Math.cos(angle) * dist,
         y: Math.sin(angle) * dist,
-        z: (Math.random() - 0.2) * 200,
+        z: (Math.random() - 0.2) * 160,
         rx: (Math.random() - 0.5) * 720,
         ry: (Math.random() - 0.5) * 720,
         rz: (Math.random() - 0.5) * 720,
-        scale: 0.5 + Math.random() * 0.8,
+        scale: 0.4 + Math.random() * 0.6,
       };
     });
     setFragments(frags);
@@ -142,7 +141,6 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
       const mouseX = e.clientX - centerX;
       const mouseY = e.clientY - centerY;
 
-      // Soft 3D tilt calculation
       const rotateY = (mouseX / (rect.width / 2)) * 14;
       const rotateX = -(mouseY / (rect.height / 2)) * 14;
 
@@ -174,7 +172,6 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
     if (isOpening) return;
     setIsOpening(true);
 
-    // Audio cue
     playProceduralWaxSnap(soundEnabled);
 
     const tl = gsap.timeline({
@@ -209,13 +206,14 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
       );
     }
 
-    // PHASE 2: Wax Seal Fracture & Shatter
+    // PHASE 2: Peel & Stick Heart Seal Peel & Fracture
     if (waxSealRef.current) {
       tl.to(
         waxSealRef.current,
         {
-          scale: 1.25,
-          duration: 0.12,
+          scale: 1.3,
+          rotateZ: -12,
+          duration: 0.15,
           ease: "power2.out",
         },
         0.1
@@ -224,10 +222,11 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
         {
           opacity: 0,
           scale: 0.2,
+          rotateZ: 25,
           duration: 0.25,
           ease: "power3.in",
         },
-        0.22
+        0.25
       );
     }
 
@@ -236,7 +235,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
       tl.fromTo(
         shockwaveRef.current,
         { opacity: 0.9, scale: 0.5 },
-        { opacity: 0, scale: 3.2, duration: 0.6, ease: "power2.out" },
+        { opacity: 0, scale: 3.0, duration: 0.6, ease: "power2.out" },
         0.22
       );
     }
@@ -255,7 +254,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
           rotateZ: (i) => fragments[i]?.rz || 0,
           opacity: 0,
           scale: 0,
-          duration: 0.8,
+          duration: 0.75,
           stagger: 0.01,
           ease: "power3.out",
         },
@@ -272,11 +271,11 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
           duration: 1.0,
           ease: "back.inOut(1.5)",
         },
-        0.5
+        0.45
       );
 
       // Halfway through flap fold, switch z-index so top flap goes behind card
-      tl.set(topFlapRef.current, { zIndex: 1 }, 0.95);
+      tl.set(topFlapRef.current, { zIndex: 1 }, 0.9);
     }
 
     // PHASE 4: Invitation Card Emerges vertically from pocket
@@ -289,22 +288,21 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
           duration: 1.1,
           ease: "power3.inOut",
         },
-        1.1
+        1.05
       );
     }
 
-    // Light reflection sheen across the rising card
+    // Light reflection sheen across rising card
     if (cardShineRef.current) {
       tl.fromTo(
         cardShineRef.current,
         { x: "-120%" },
         { x: "220%", duration: 1.1, ease: "power2.inOut" },
-        1.3
+        1.25
       );
     }
 
     // PHASE 5: The "3D Jump Out" Fullscreen Expansion
-    // Viewport zooms into emerging card while envelope pushes into background with depth blur
     if (envelopeRef.current) {
       tl.to(
         envelopeRef.current,
@@ -316,7 +314,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
           duration: 1.1,
           ease: "power4.inOut",
         },
-        2.0
+        1.95
       );
     }
 
@@ -339,7 +337,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
           duration: 1.2,
           ease: "power4.inOut",
         },
-        2.0
+        1.95
       );
     }
 
@@ -352,7 +350,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
           duration: 0.8,
           ease: "power2.inOut",
         },
-        2.4
+        2.35
       );
     }
   });
@@ -365,33 +363,41 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[300] select-none overflow-hidden bg-[#070b14]"
+      className="fixed inset-0 z-[300] select-none overflow-hidden"
       style={{
         background:
-          "radial-gradient(ellipse 100% 90% at 50% 45%, #152238 0%, #0a1322 55%, #050810 100%)",
+          "radial-gradient(ellipse 110% 100% at 50% 45%, #182238 0%, #0d1526 60%, #060914 100%)",
       }}
     >
       {/* Dynamic Ambient Background Elements */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="pointer-events-none absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 50% 30%, rgba(212,175,55,0.15) 0%, transparent 60%)",
+            "radial-gradient(circle at 50% 35%, rgba(212,175,55,0.2) 0%, transparent 65%)",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-20"
+        className="pointer-events-none absolute inset-0 opacity-15"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%23c5a059' fill-opacity='0.08'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%23c5a059' fill-opacity='0.12'/%3E%3C/svg%3E")`,
         }}
       />
+
+      {/* Dynamic Canvas Floating Golden Embers / Kasavu Dust */}
+      <ParticleField density={95} />
+
+      {/* Falling Kerala Wedding Flowers & Petals */}
+      <FallingFlowers />
 
       {/* Floating Gold Kasavu Sparkles */}
       <AmbientSparkles />
 
-      {/* Top Utility Controls */}
+
+
+      {/* Top Controls */}
       <div className="absolute top-6 right-6 z-[350] flex items-center gap-3">
         <button
           type="button"
@@ -422,15 +428,15 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
       >
         {/* Header Greeting */}
         <div className="absolute top-12 left-1/2 z-10 -translate-x-1/2 text-center sm:top-16">
-          <p className="font-display text-xs italic tracking-[0.25em] text-amber-200/75 uppercase sm:text-sm">
-            Invitation Card
+          <p className="font-display text-xs italic tracking-[0.25em] text-amber-200/80 uppercase sm:text-sm">
+            You have received a wedding invitation
           </p>
-          <h2 className="mt-1 font-display text-lg font-light tracking-[0.15em] text-amber-100/90 sm:text-xl">
+          <h2 className="mt-1 font-display text-lg font-light tracking-[0.15em] text-amber-100/95 sm:text-xl">
             Nithin &amp; Lakshmi
           </h2>
         </div>
 
-        {/* Master 3D Envelope Component */}
+        {/* Master 3D Light-Theme Envelope */}
         <div
           ref={envelopeRef}
           className="relative select-none"
@@ -441,24 +447,17 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
             willChange: "transform",
           }}
         >
-          {/* ENVELOPE BACK PANEL & KASAVU LINING */}
+          {/* LIGHT THEME ENVELOPE BACK PANEL */}
           <div
-            className="absolute inset-0 overflow-hidden rounded-md border border-amber-400/30 bg-[#0f172a]"
+            className="absolute inset-0 overflow-hidden rounded-md border border-amber-500/40"
             style={{
+              background:
+                "linear-gradient(155deg, #faf7f2 0%, #f3ece0 50%, #e8decb 100%)",
               boxShadow:
-                "0 35px 90px -15px rgba(0,0,0,0.85), inset 0 0 40px rgba(0,0,0,0.6)",
+                "0 30px 80px -10px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.8) inset, 0 10px 25px rgba(197,160,89,0.15)",
               transformStyle: "preserve-3d",
             }}
           >
-            {/* Dark Indigo paper texture */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(145deg, #1b2a47 0%, #101c33 60%, #0b1324 100%)",
-              }}
-            />
-
             {/* Kasavu Gold Woven Silk Inner Lining */}
             <KasavuLiningPattern />
 
@@ -467,19 +466,19 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               aria-hidden
               className="pointer-events-none absolute inset-0"
               style={{
-                boxShadow: "inset 0 10px 30px rgba(0,0,0,0.7)",
+                boxShadow: "inset 0 12px 30px rgba(160, 130, 70, 0.25)",
               }}
             />
           </div>
 
-          {/* THE WEDDING INVITATION CARD (Inside Cavity) */}
+          {/* WEDDING INVITATION CARD (Inside Cavity) */}
           <div
             ref={cardRef}
             className="absolute inset-x-[4%] bottom-[4%] h-[92%] overflow-hidden rounded-sm"
             style={{
               zIndex: 2,
               transformStyle: "preserve-3d",
-              boxShadow: "0 12px 35px rgba(0,0,0,0.45)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
               willChange: "transform, width, height, top, left",
             }}
           >
@@ -488,7 +487,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               className="relative flex h-full w-full flex-col items-center justify-between p-5 text-center sm:p-7"
               style={{
                 background:
-                  "linear-gradient(165deg, #fffdf8 0%, #f7f1e3 50%, #eee4ce 100%)",
+                  "linear-gradient(165deg, #ffffff 0%, #faf6ec 50%, #f3ebd7 100%)",
                 border: "1px solid rgba(197, 160, 89, 0.45)",
               }}
             >
@@ -505,7 +504,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
                 className="pointer-events-none absolute inset-0 z-20 opacity-40"
                 style={{
                   background:
-                    "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.8) 50%, transparent 80%)",
+                    "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.9) 50%, transparent 80%)",
                   transform: "translateX(-120%)",
                 }}
               />
@@ -520,7 +519,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
 
               {/* Card Main Body */}
               <div className="relative z-10 my-auto flex flex-col items-center gap-1 sm:gap-2">
-                <span className="font-display text-xs tracking-[0.18em] text-amber-900/70 uppercase sm:text-sm">
+                <span className="font-display text-xs tracking-[0.18em] text-amber-900/75 uppercase sm:text-sm">
                   Together with their families
                 </span>
 
@@ -562,7 +561,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
             </div>
           </div>
 
-          {/* FRONT ENVELOPE POCKET (Triangular Folds) */}
+          {/* LIGHT THEME FRONT ENVELOPE POCKET (Triangular Folds) */}
           <div
             className="pointer-events-none absolute inset-0 overflow-hidden rounded-md"
             style={{
@@ -571,21 +570,22 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
             }}
           >
             <svg
-              className="h-full w-full drop-shadow-lg"
+              className="h-full w-full drop-shadow-md"
               viewBox="0 0 420 280"
               preserveAspectRatio="none"
               fill="none"
             >
               <defs>
-                <linearGradient id="pocketGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#1e2e4f" />
-                  <stop offset="60%" stopColor="#15223b" />
-                  <stop offset="100%" stopColor="#0d1628" />
+                {/* Light Ivory Soft Blue / Cream Gradients */}
+                <linearGradient id="pocketLightGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f7f2e8" />
+                  <stop offset="50%" stopColor="#efe7d8" />
+                  <stop offset="100%" stopColor="#e3d7c3" />
                 </linearGradient>
 
                 <linearGradient id="goldSeamGrad" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="transparent" />
-                  <stop offset="50%" stopColor="rgba(212,175,55,0.7)" />
+                  <stop offset="50%" stopColor="rgba(197,160,89,0.85)" />
                   <stop offset="100%" stopColor="transparent" />
                 </linearGradient>
               </defs>
@@ -593,26 +593,26 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               {/* Bottom V Pocket Path */}
               <path
                 d="M 0,280 L 210,140 L 420,280 Z"
-                fill="url(#pocketGrad)"
-                stroke="rgba(255,255,255,0.06)"
+                fill="url(#pocketLightGrad)"
+                stroke="rgba(197,160,89,0.3)"
                 strokeWidth="1"
               />
 
               {/* Left Side Pocket Fold */}
               <path
                 d="M 0,0 L 210,140 L 0,280 Z"
-                fill="url(#pocketGrad)"
-                fillOpacity="0.95"
-                stroke="rgba(255,255,255,0.04)"
+                fill="url(#pocketLightGrad)"
+                fillOpacity="0.97"
+                stroke="rgba(197,160,89,0.25)"
                 strokeWidth="1"
               />
 
               {/* Right Side Pocket Fold */}
               <path
                 d="M 420,0 L 210,140 L 420,280 Z"
-                fill="url(#pocketGrad)"
-                fillOpacity="0.95"
-                stroke="rgba(255,255,255,0.04)"
+                fill="url(#pocketLightGrad)"
+                fillOpacity="0.97"
+                stroke="rgba(197,160,89,0.25)"
                 strokeWidth="1"
               />
 
@@ -620,12 +620,12 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               <path
                 d="M 0,280 L 210,140 L 420,280"
                 stroke="url(#goldSeamGrad)"
-                strokeWidth="1.5"
+                strokeWidth="1.8"
               />
             </svg>
           </div>
 
-          {/* TOP TRIANGULAR FLAP (Rotates -180 deg along top origin) */}
+          {/* LIGHT THEME TOP TRIANGULAR FLAP */}
           <div
             ref={topFlapRef}
             className="absolute top-0 left-0 h-[52%] w-full"
@@ -636,7 +636,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               willChange: "transform",
             }}
           >
-            {/* Flap Outer Front Face */}
+            {/* Flap Outer Front Face (Light Theme Ivory/Cream) */}
             <div
               className="absolute inset-0"
               style={{ backfaceVisibility: "hidden" }}
@@ -649,15 +649,15 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               >
                 <path
                   d="M 0,0 L 420,0 L 210,145 Z"
-                  fill="#1c2b4a"
-                  stroke="rgba(212,175,55,0.4)"
+                  fill="#f9f5ed"
+                  stroke="rgba(197,160,89,0.4)"
                   strokeWidth="1"
                 />
                 {/* Gold seam edge */}
                 <path
                   d="M 0,0 L 210,145 L 420,0"
-                  stroke="rgba(212,175,55,0.7)"
-                  strokeWidth="1.5"
+                  stroke="rgba(197,160,89,0.8)"
+                  strokeWidth="1.8"
                 />
               </svg>
             </div>
@@ -675,11 +675,11 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
                 viewBox="0 0 420 145"
                 preserveAspectRatio="none"
               >
-                <path d="M 0,0 L 420,0 L 210,145 Z" fill="#142138" />
+                <path d="M 0,0 L 420,0 L 210,145 Z" fill="#f0e4cc" />
               </svg>
               {/* Inner Gold Kasavu Pattern on open flap */}
               <div
-                className="absolute inset-0 opacity-80"
+                className="absolute inset-0 opacity-85"
                 style={{
                   clipPath: "polygon(0 0, 100% 0, 50% 100%)",
                 }}
@@ -689,7 +689,7 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
             </div>
           </div>
 
-          {/* 3D WAX SEAL (Centered over Top Flap Tip) */}
+          {/* PEEL & STICK SMALL-RADIUS HEART SEAL */}
           <div
             ref={waxSealRef}
             onClick={triggerOpen}
@@ -700,8 +700,8 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
             }}
             tabIndex={0}
             role="button"
-            aria-label="Break Wax Seal to open invitation"
-            className={`absolute top-1/2 left-1/2 z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 outline-none sm:h-28 sm:w-28 ${
+            aria-label="Peel & Seal Heart Sticker to open invitation"
+            className={`absolute top-1/2 left-1/2 z-10 h-14 w-14 -translate-x-1/2 -translate-y-1/2 outline-none sm:h-16 sm:w-16 ${
               isOpening ? "pointer-events-none" : "cursor-pointer"
             }`}
             style={{
@@ -709,17 +709,17 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
               transition: "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
             }}
           >
-            {/* Realistic Red Wax Seal SVG with embossed relief */}
-            <WaxSeal3D />
+            {/* Peel & Stick Heart-Shaped Wax / Sticker Seal */}
+            <PeelAndStickHeartSeal />
           </div>
 
           {/* Shockwave Aura Ring Pulse */}
           <div
             ref={shockwaveRef}
             aria-hidden
-            className="pointer-events-none absolute top-1/2 left-1/2 z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-400/80 opacity-0"
+            className="pointer-events-none absolute top-1/2 left-1/2 z-10 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-500/80 opacity-0 sm:h-16 sm:w-16"
             style={{
-              boxShadow: "0 0 35px rgba(245, 158, 11, 0.8)",
+              boxShadow: "0 0 25px rgba(225, 29, 72, 0.8)",
             }}
           />
 
@@ -733,14 +733,14 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
             {fragments.map((f) => (
               <div
                 key={f.id}
-                className="absolute top-0 left-0 -ml-2 -mt-2 rounded-xs"
+                className="absolute top-0 left-0 -ml-1.5 -mt-1.5 rounded-full"
                 style={{
-                  width: `${12 * f.scale}px`,
-                  height: `${14 * f.scale}px`,
+                  width: `${10 * f.scale}px`,
+                  height: `${10 * f.scale}px`,
                   background:
-                    "radial-gradient(circle at 35% 35%, #e11d48, #9f1239 60%, #4c0519 100%)",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.6)",
-                  border: "1px solid rgba(251,191,36,0.5)",
+                    "radial-gradient(circle at 35% 35%, #f43f5e, #be123c 60%, #881337 100%)",
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.5)",
+                  border: "1px solid rgba(254,240,138,0.7)",
                 }}
               />
             ))}
@@ -750,11 +750,11 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
         {/* Bottom Interactive Hint */}
         <p
           ref={hintTextRef}
-          className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 font-display text-xs uppercase tracking-[0.35em] text-amber-200/70 sm:bottom-14 sm:text-sm"
+          className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 font-display text-xs uppercase tracking-[0.35em] text-amber-200/80 sm:bottom-14 sm:text-sm"
         >
           <span className="inline-flex items-center gap-2">
             <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
-            Tap the Wax Seal to Open
+            Tap the Heart Seal to Open
             <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
           </span>
         </p>
@@ -764,93 +764,83 @@ export function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
 }
 
 /**
- * Ultra-Realistic 3D Red Wax Seal Component with Metallic Gold Dust & Raised Relief
+ * Ultra-Realistic Peel & Stick Small-Radius Heart Seal Component
+ * Features:
+ *  - Small radius heart shape SVG path
+ *  - Tactile 3D embossed relief initials "L & N"
+ *  - Realistic Peel & Stick metallic edge sheen & shadow
  */
-function WaxSeal3D() {
+function PeelAndStickHeartSeal() {
   return (
     <div className="group relative h-full w-full">
-      {/* Dynamic Drop Shadow onto Envelope Paper */}
+      {/* Tactile 3D Drop Shadow on Envelope */}
       <div
         aria-hidden
-        className="absolute inset-0 rounded-full transition-all duration-300 group-hover:scale-105"
+        className="absolute inset-0 rounded-full transition-all duration-300 group-hover:scale-110"
         style={{
-          boxShadow:
-            "0 14px 28px rgba(0,0,0,0.65), 0 6px 12px rgba(0,0,0,0.45), 0 0 20px rgba(185,28,28,0.3)",
+          filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.4)) drop-shadow(0 3px 6px rgba(190,18,60,0.3))",
         }}
       />
 
       <svg
         viewBox="0 0 100 100"
-        className="relative h-full w-full transition-transform duration-300 group-hover:scale-105"
+        className="relative h-full w-full transition-transform duration-300 group-hover:scale-110"
       >
         <defs>
-          {/* Deep Crimson Wax Radial Gradient */}
-          <radialGradient id="waxBodyGrad" cx="38%" cy="32%" r="65%">
-            <stop offset="0%" stopColor="#f43f5e" />
+          {/* Rich Ruby Red Wax Radial Gradient */}
+          <radialGradient id="heartWaxGrad" cx="40%" cy="32%" r="65%">
+            <stop offset="0%" stopColor="#fb7185" />
             <stop offset="35%" stopColor="#e11d48" />
-            <stop offset="70%" stopColor="#9f1239" />
-            <stop offset="100%" stopColor="#4c0519" />
+            <stop offset="70%" stopColor="#be123c" />
+            <stop offset="100%" stopColor="#680721" />
           </radialGradient>
 
-          {/* Metallic Gold Dust Accents */}
-          <radialGradient id="goldDust" cx="45%" cy="35%" r="50%">
-            <stop offset="0%" stopColor="rgba(254, 240, 138, 0.45)" />
-            <stop offset="60%" stopColor="rgba(217, 119, 6, 0.15)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-          </radialGradient>
+          {/* Metallic Gold Sheen Gradient */}
+          <linearGradient id="heartGoldEdge" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#fef08a" />
+            <stop offset="50%" stopColor="#eab308" />
+            <stop offset="100%" stopColor="#ca8a04" />
+          </linearGradient>
 
-          {/* Highlight Specular Sheen */}
-          <linearGradient id="waxSheen" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.45)" />
-            <stop offset="30%" stopColor="rgba(255,255,255,0.1)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0.4)" />
+          {/* Peel Gloss Sheen */}
+          <linearGradient id="peelGloss" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.6)" />
+            <stop offset="35%" stopColor="rgba(255,255,255,0.15)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.25)" />
           </linearGradient>
         </defs>
 
-        {/* Organic Wax Rim Edge */}
-        <path d={WAX_BLOB_PATH} fill="url(#waxBodyGrad)" />
-        <path d={WAX_BLOB_PATH} fill="url(#goldDust)" />
-        <path d={WAX_BLOB_PATH} fill="url(#waxSheen)" opacity="0.3" />
+        {/* Heart Seal Base */}
+        <path d={HEART_PATH} fill="url(#heartWaxGrad)" />
+        <path d={HEART_PATH} fill="url(#peelGloss)" />
 
-        {/* Inner Engraved Stamped Concentric Circles */}
-        <circle
-          cx="50"
-          cy="50"
-          r="30"
+        {/* Inner Gold Foil Stamped Heart Border */}
+        <path
+          d={INNER_HEART_PATH}
           fill="none"
-          stroke="#4c0519"
+          stroke="url(#heartGoldEdge)"
           strokeWidth="1.8"
-          opacity="0.6"
-        />
-        <circle
-          cx="50"
-          cy="50"
-          r="26"
-          fill="none"
-          stroke="#fbbf24"
-          strokeWidth="1"
-          opacity="0.5"
+          opacity="0.85"
         />
 
         {/* Embossed Relief Initials "L & N" */}
-        {/* Shadow Layer for 3D Relief Depth */}
+        {/* L Initial */}
         <text
-          x="33"
-          y="59"
+          x="34"
+          y="54"
           fontFamily="'Cormorant Garamond', Georgia, serif"
-          fontSize="26"
+          fontSize="23"
           fontWeight="700"
-          fill="#30030f"
+          fill="#450a17"
           textAnchor="start"
         >
           L
         </text>
-        {/* Raised Highlight Layer */}
         <text
-          x="32.2"
-          y="58"
+          x="33.2"
+          y="53"
           fontFamily="'Cormorant Garamond', Georgia, serif"
-          fontSize="26"
+          fontSize="23"
           fontWeight="700"
           fill="#fef08a"
           textAnchor="start"
@@ -861,22 +851,22 @@ function WaxSeal3D() {
         {/* Ampersand "&" */}
         <text
           x="50"
-          y="52"
+          y="48"
           fontFamily="'Cormorant Garamond', Georgia, serif"
           fontStyle="italic"
-          fontSize="13"
+          fontSize="11"
           fontWeight="600"
-          fill="#30030f"
+          fill="#450a17"
           textAnchor="middle"
         >
           &amp;
         </text>
         <text
           x="49.5"
-          y="51.2"
+          y="47.2"
           fontFamily="'Cormorant Garamond', Georgia, serif"
           fontStyle="italic"
-          fontSize="13"
+          fontSize="11"
           fontWeight="600"
           fill="#fef08a"
           textAnchor="middle"
@@ -884,23 +874,23 @@ function WaxSeal3D() {
           &amp;
         </text>
 
-        {/* "N" Initial */}
+        {/* N Initial */}
         <text
-          x="67"
-          y="59"
+          x="66"
+          y="54"
           fontFamily="'Cormorant Garamond', Georgia, serif"
-          fontSize="26"
+          fontSize="23"
           fontWeight="700"
-          fill="#30030f"
+          fill="#450a17"
           textAnchor="end"
         >
           N
         </text>
         <text
-          x="66.2"
-          y="58"
+          x="65.2"
+          y="53"
           fontFamily="'Cormorant Garamond', Georgia, serif"
-          fontSize="26"
+          fontSize="23"
           fontWeight="700"
           fill="#fef08a"
           textAnchor="end"
@@ -908,44 +898,38 @@ function WaxSeal3D() {
           N
         </text>
 
-        {/* Gold Bead Accents Around Rim */}
-        {GOLD_BEAD_POSITIONS.map((pos, i) => (
-          <circle
-            key={i}
-            cx={pos[0]}
-            cy={pos[1]}
-            r="0.8"
-            fill="#fef08a"
-            opacity="0.75"
-          />
-        ))}
+        {/* Peel & Stick Bottom Corner Curl Specular Accent */}
+        <path
+          d="M 45 82 C 48 85 50 87 50 87 C 50 87 52 85 55 82 Z"
+          fill="url(#heartGoldEdge)"
+          opacity="0.9"
+        />
       </svg>
     </div>
   );
 }
 
-/** Pre-computed bead accent coordinates */
-const GOLD_BEAD_POSITIONS: [number, number][] = Array.from({ length: 28 }, (_, i) => {
-  const angle = (i / 28) * Math.PI * 2;
-  return [
-    Math.round((50 + Math.cos(angle) * 28) * 10) / 10,
-    Math.round((50 + Math.sin(angle) * 28) * 10) / 10,
-  ];
-});
+/** Smooth, elegant Heart SVG path */
+const HEART_PATH = `
+  M 50 88
+  C 50 88, 12 58, 12 32
+  C 12 16, 26 8, 40 16
+  C 50 23, 50 23, 50 23
+  C 50 23, 50 23, 60 16
+  C 74 8, 88 16, 88 32
+  C 88 58, 50 88, 50 88
+  Z
+`;
 
-/** Irregular organic SVG path for realistic melted wax edge */
-const WAX_BLOB_PATH = `
-  M 50 6
-  C 60 5, 70 8, 78 14
-  C 84 18, 90 25, 93 33
-  C 96 41, 95 50, 93 58
-  C 90 67, 85 75, 78 81
-  C 70 87, 60 92, 50 92
-  C 40 92, 30 87, 22 81
-  C 15 75, 10 67, 7 58
-  C 5 50, 4 41, 7 33
-  C 10 25, 16 18, 22 14
-  C 30 8, 40 5, 50 6
+/** Inner concentric Heart path for gold stamped rim */
+const INNER_HEART_PATH = `
+  M 50 80
+  C 50 80, 18 53, 18 32
+  C 18 20, 29 13, 40 20
+  C 50 26, 50 26, 50 26
+  C 50 26, 50 26, 60 20
+  C 71 13, 82 20, 82 32
+  C 82 53, 50 80, 50 80
   Z
 `;
 
@@ -954,7 +938,7 @@ const WAX_BLOB_PATH = `
  */
 function KasavuLiningPattern() {
   return (
-    <div className="absolute inset-0 opacity-25">
+    <div className="absolute inset-0 opacity-30">
       <svg className="h-full w-full" width="100%" height="100%">
         <defs>
           <pattern
@@ -969,11 +953,11 @@ function KasavuLiningPattern() {
               stroke="#c5a059"
               strokeWidth="0.8"
             />
-            <circle cx="15" cy="15" r="2.5" fill="#eab308" opacity="0.6" />
+            <circle cx="15" cy="15" r="2.5" fill="#eab308" opacity="0.7" />
             <path
               d="M 0 0 L 30 30 M 30 0 L 0 30"
               stroke="#c5a059"
-              strokeWidth="0.3"
+              strokeWidth="0.35"
               strokeDasharray="2 2"
             />
           </pattern>
@@ -1023,3 +1007,199 @@ function AmbientSparkles() {
     </div>
   );
 }
+
+/**
+ * Falling Kerala Wedding Flowers & Petals Component
+ * Features realistic Marigold blossoms, Jasmine flowers, Lotus petals, and Red Hibiscus/Rose petals.
+ */
+function FallingFlowers() {
+  type FlowerType = "marigold" | "jasmine" | "rose" | "lotus_petal" | "marigold_petal";
+
+  const [flowers, setFlowers] = useState<
+    Array<{
+      id: number;
+      type: FlowerType;
+      left: number;
+      size: number;
+      duration: number;
+      delay: number;
+    }>
+  >([]);
+
+  useEffect(() => {
+    const types: FlowerType[] = [
+      "marigold",
+      "jasmine",
+      "rose",
+      "lotus_petal",
+      "marigold_petal",
+      "marigold",
+      "jasmine",
+    ];
+
+    const items = Array.from({ length: 26 }, (_, i) => ({
+      id: i,
+      type: types[i % types.length],
+      left: 2 + Math.random() * 94,
+      size: 16 + Math.random() * 22,
+      duration: 7 + Math.random() * 9,
+      delay: Math.random() * 7,
+    }));
+    setFlowers(items);
+  }, []);
+
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {flowers.map((f) => (
+        <div
+          key={f.id}
+          className="absolute -top-12 opacity-85"
+          style={{
+            left: `${f.left}%`,
+            width: `${f.size}px`,
+            height: `${f.size}px`,
+            animation: `petal-fall ${f.duration}s linear infinite ${f.delay}s`,
+            filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.35))",
+          }}
+        >
+          <FlowerSVG type={f.type} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Detailed SVG Renderer for authentic Kerala wedding flowers & petals
+ */
+function FlowerSVG({
+  type,
+}: {
+  type: "marigold" | "jasmine" | "rose" | "lotus_petal" | "marigold_petal";
+}) {
+  if (type === "marigold") {
+    // Layered Golden-Orange Marigold Flower (Chendumalli)
+    return (
+      <svg viewBox="0 0 40 40" className="h-full w-full">
+        {/* Outer Petal Ring */}
+        {Array.from({ length: 12 }, (_, i) => {
+          const a = (i / 12) * Math.PI * 2;
+          const cx = 20 + Math.cos(a) * 11;
+          const cy = 20 + Math.sin(a) * 11;
+          return <circle key={i} cx={cx} cy={cy} r="6.5" fill="#ea580c" />;
+        })}
+        {/* Middle Petal Ring */}
+        {Array.from({ length: 10 }, (_, i) => {
+          const a = (i / 10) * Math.PI * 2 + 0.2;
+          const cx = 20 + Math.cos(a) * 7.5;
+          const cy = 20 + Math.sin(a) * 7.5;
+          return <circle key={i} cx={cx} cy={cy} r="5.5" fill="#f97316" />;
+        })}
+        {/* Inner Petal Ring */}
+        {Array.from({ length: 8 }, (_, i) => {
+          const a = (i / 8) * Math.PI * 2 + 0.4;
+          const cx = 20 + Math.cos(a) * 4;
+          const cy = 20 + Math.sin(a) * 4;
+          return <circle key={i} cx={cx} cy={cy} r="4.5" fill="#eab308" />;
+        })}
+        {/* Center Seed Core */}
+        <circle cx="20" cy="20" r="3.5" fill="#7c2d12" />
+        <circle cx="20" cy="20" r="2" fill="#fde047" opacity="0.8" />
+      </svg>
+    );
+  }
+
+  if (type === "jasmine") {
+    // Traditional White Jasmine Blossom (Mullappoo)
+    return (
+      <svg viewBox="0 0 40 40" className="h-full w-full">
+        {/* 5 White Petals */}
+        {Array.from({ length: 5 }, (_, i) => {
+          const deg = (i / 5) * 360;
+          return (
+            <path
+              key={i}
+              d="M 20 20 C 14 10, 16 2, 20 2 C 24 2, 26 10, 20 20 Z"
+              fill="#ffffff"
+              stroke="#fef08a"
+              strokeWidth="0.5"
+              transform={`rotate(${deg} 20 20)`}
+            />
+          );
+        })}
+        {/* Soft Yellow Center Core */}
+        <circle cx="20" cy="20" r="3.5" fill="#fde047" />
+        <circle cx="20" cy="20" r="1.8" fill="#eab308" />
+      </svg>
+    );
+  }
+
+  if (type === "rose") {
+    // Red Rose / Hibiscus Blossom
+    return (
+      <svg viewBox="0 0 40 40" className="h-full w-full">
+        {/* Outer Red Petals */}
+        {Array.from({ length: 6 }, (_, i) => {
+          const deg = (i / 6) * 360;
+          return (
+            <path
+              key={i}
+              d="M 20 20 C 10 12, 10 2, 20 2 C 30 2, 30 12, 20 20 Z"
+              fill="#e11d48"
+              transform={`rotate(${deg} 20 20)`}
+            />
+          );
+        })}
+        {/* Inner Swirl Petals */}
+        {Array.from({ length: 5 }, (_, i) => {
+          const deg = (i / 5) * 360 + 30;
+          return (
+            <circle
+              key={i}
+              cx={20 + Math.cos((deg * Math.PI) / 180) * 4}
+              cy={20 + Math.sin((deg * Math.PI) / 180) * 4}
+              r="5"
+              fill="#be123c"
+            />
+          );
+        })}
+        <circle cx="20" cy="20" r="3" fill="#fbbf24" />
+      </svg>
+    );
+  }
+
+  if (type === "lotus_petal") {
+    // Pink Lotus Petal (Thamara)
+    return (
+      <svg viewBox="0 0 30 40" className="h-full w-full">
+        <defs>
+          <linearGradient id="lotusGrad" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="40%" stopColor="#f472b6" />
+            <stop offset="100%" stopColor="#db2777" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 15 2 C 5 12, 2 26, 15 38 C 28 26, 25 12, 15 2 Z"
+          fill="url(#lotusGrad)"
+          stroke="#f472b6"
+          strokeWidth="0.5"
+        />
+      </svg>
+    );
+  }
+
+  // Marigold Petal
+  return (
+    <svg viewBox="0 0 30 30" className="h-full w-full">
+      <path
+        d="M 15 2 C 8 8, 4 18, 15 28 C 26 18, 22 8, 15 2 Z"
+        fill="#f97316"
+        stroke="#fde047"
+        strokeWidth="0.5"
+      />
+    </svg>
+  );
+}
+
+

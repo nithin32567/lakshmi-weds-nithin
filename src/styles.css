@@ -275,3 +275,21 @@
     opacity: 1;
   }
 }
+
+@keyframes petal-fall {
+  0% {
+    transform: translateY(0vh) rotate(0deg) translateX(0px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(40px);
+    opacity: 0;
+  }
+}
+
