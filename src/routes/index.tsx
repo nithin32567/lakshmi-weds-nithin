@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
+import { EnvelopeIntro } from "@/components/wedding/EnvelopeIntro";
 
 const CustomCursor = lazy(() => import("@/components/wedding/CustomCursor").then((m) => ({ default: m.CustomCursor })));
-const DigitalPass = lazy(() => import("@/components/wedding/DigitalPass").then((m) => ({ default: m.DigitalPass })));
-const Events = lazy(() => import("@/components/wedding/Events").then((m) => ({ default: m.Events })));
 const Footer = lazy(() => import("@/components/wedding/Footer").then((m) => ({ default: m.Footer })));
 const Gallery = lazy(() => import("@/components/wedding/Gallery").then((m) => ({ default: m.Gallery })));
 const Hero = lazy(() => import("@/components/wedding/Hero").then((m) => ({ default: m.Hero })));
@@ -13,9 +13,8 @@ const InvitationCard = lazy(() => import("@/components/wedding/InvitationCard").
 const LoveStory = lazy(() => import("@/components/wedding/LoveStory").then((m) => ({ default: m.LoveStory })));
 const Navbar = lazy(() => import("@/components/wedding/Navbar").then((m) => ({ default: m.Navbar })));
 const RSVP = lazy(() => import("@/components/wedding/RSVP").then((m) => ({ default: m.RSVP })));
-const SadyaMenu = lazy(() => import("@/components/wedding/SadyaMenu").then((m) => ({ default: m.SadyaMenu })));
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(  {
   head: () => ({
     meta: [
       { title: "Nithin & Lakshmi — Kerala Wedding · 12 September 2026" },
@@ -38,21 +37,39 @@ export const Route = createFileRoute("/")({
 });
 
 export function Index() {
+  const [envelopeOpened, setEnvelopeOpened] = useState(false);
+
   return (
-    <Suspense fallback={null}>
-      <SmoothScroll>
-        <CustomCursor />
-        <Navbar />
-        <Hero />
-        <InvitationCard />
-        <LoveStory />
-        {/* <Events /> */}
-        {/* <SadyaMenu /> */}
-        <Gallery />
-        {/* <DigitalPass /> */}
-        <RSVP />
-        <Footer />
-      </SmoothScroll>
-    </Suspense>
+    <>
+      {/* Sealed wax-seal envelope intro — gate before the site */}
+      {!envelopeOpened && (
+        <EnvelopeIntro onComplete={() => setEnvelopeOpened(true)} />
+      )}
+
+      {/* Main website — fades in with a soft scale after envelope is dismissed */}
+      <AnimatePresence>
+        {envelopeOpened && (
+          <motion.div
+            key="site-content"
+            initial={{ opacity: 0, scale: 1.018 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Suspense fallback={null}>
+              <SmoothScroll>
+                <CustomCursor />
+                <Navbar />
+                <Hero />
+                <InvitationCard />
+                <LoveStory />
+                <Gallery />
+                <RSVP />
+                <Footer />
+              </SmoothScroll>
+            </Suspense>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

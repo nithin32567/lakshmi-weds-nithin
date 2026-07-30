@@ -37,11 +37,12 @@
 import React from "react";
 
 /** Traditional Kerala brass lamp (Nilavilakku) with realistic 3D textures & flickering flames */
-export function Nilavilakku({ className = "" }: { className?: string }) {
+export function Nilavilakku({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg
       viewBox="0 0 160 240"
       className={className}
+      style={style}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
