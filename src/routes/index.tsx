@@ -3,8 +3,8 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
-import { EnvelopeIntro } from "@/components/wedding/EnvelopeIntro";
 
+const EnvelopeIntro = lazy(() => import("@/components/wedding/EnvelopeIntro").then((m) => ({ default: m.EnvelopeIntro })));
 const CustomCursor = lazy(() => import("@/components/wedding/CustomCursor").then((m) => ({ default: m.CustomCursor })));
 const Footer = lazy(() => import("@/components/wedding/Footer").then((m) => ({ default: m.Footer })));
 const Gallery = lazy(() => import("@/components/wedding/Gallery").then((m) => ({ default: m.Gallery })));
@@ -48,7 +48,9 @@ export function Index() {
     <>
       {/* Sealed wax-seal envelope intro — gate before the site */}
       {isMounted && !envelopeOpened && (
-        <EnvelopeIntro onComplete={() => setEnvelopeOpened(true)} />
+        <Suspense fallback={null}>
+          <EnvelopeIntro onComplete={() => setEnvelopeOpened(true)} />
+        </Suspense>
       )}
 
       {/* Main website — fades in with a soft scale after envelope is dismissed */}
