@@ -16,6 +16,9 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  ssr: {
+    noExternal: ['gsap', '@gsap/react'],
+  },
   build: {
     chunkSizeWarningLimit: 1500,
   },
