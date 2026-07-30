@@ -26,9 +26,13 @@ function getMimeType(filePath) {
 
 export default async function handler(req, res) {
   try {
+    let rawUrl = req.url || '/';
+    if (rawUrl.startsWith('/api/index.js')) {
+      rawUrl = rawUrl.replace(/^\/api\/index\.js/, '') || '/';
+    }
     const protocol = req.headers['x-forwarded-proto'] || 'https';
     const host = req.headers.host || 'localhost';
-    const requestUrl = new URL(req.url || '/', `${protocol}://${host}`);
+    const requestUrl = new URL(rawUrl, `${protocol}://${host}`);
     const pathname = requestUrl.pathname;
 
     if (PUBLIC_FILES.has(pathname) || pathname.startsWith('/assets/')) {
