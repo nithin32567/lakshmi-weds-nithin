@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 import { EnvelopeIntro } from "@/components/wedding/EnvelopeIntro";
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
+import { ParticleField } from "@/components/wedding/ParticleField";
 
 const CustomCursor = lazy(() => import("@/components/wedding/CustomCursor").then((m) => ({ default: m.CustomCursor })));
 const Footer = lazy(() => import("@/components/wedding/Footer").then((m) => ({ default: m.Footer })));
@@ -10,6 +11,7 @@ const Gallery = lazy(() => import("@/components/wedding/Gallery").then((m) => ({
 const Hero = lazy(() => import("@/components/wedding/Hero").then((m) => ({ default: m.Hero })));
 const InvitationCard = lazy(() => import("@/components/wedding/InvitationCard").then((m) => ({ default: m.InvitationCard })));
 const LoveStory = lazy(() => import("@/components/wedding/LoveStory").then((m) => ({ default: m.LoveStory })));
+const MeetUs = lazy(() => import("@/components/wedding/MeetUs").then((m) => ({ default: m.MeetUs })));
 const Navbar = lazy(() => import("@/components/wedding/Navbar").then((m) => ({ default: m.Navbar })));
 const RSVP = lazy(() => import("@/components/wedding/RSVP").then((m) => ({ default: m.RSVP })));
 
@@ -51,6 +53,8 @@ export function Index() {
           <CustomCursor />
           <Navbar />
           <Hero />
+          <MeetUs />
+           <ParticleField density={80} />
           <InvitationCard />
           <LoveStory />
           <Gallery />
