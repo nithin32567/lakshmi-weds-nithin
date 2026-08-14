@@ -27,7 +27,7 @@ export function Hero() {
       />
       <ParticleField density={80} />
 
-      <motion.div style={{ y, opacity }} className="relative z-10 w-full px-6 py-24 text-center">
+      <motion.div style={{ y, opacity }} className="relative z-10 w-full px-5 py-20 sm:py-24 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -50,10 +50,11 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 font-display text-6xl font-semibold leading-[0.95] sm:text-8xl lg:text-[10rem]"
+          className="mt-5 font-display font-semibold leading-[0.95]"
+          style={{ fontSize: "clamp(3rem, 12vw, 10rem)" }}
         >
           <span className="text-gold-shine">Nithin</span>
-          <span className="mx-3 font-hand text-4xl text-gold/70 sm:mx-6 sm:text-6xl">&amp;</span>
+          <span className="mx-2 font-hand text-gold/70 sm:mx-5" style={{ fontSize: "clamp(1.6rem, 6vw, 6rem)" }}>&amp;</span>
           <span className="text-gold-shine">Lakshmi</span>
         </motion.h1>
 
@@ -80,17 +81,17 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.8 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-4"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <a
             href="#rsvp"
-            className="rounded-full bg-gold px-8 py-3 text-sm font-medium uppercase tracking-[0.18em] text-teak-deep transition-transform duration-300 hover:scale-105"
+            className="w-full sm:w-auto rounded-full bg-gold px-8 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-teak-deep transition-transform duration-300 hover:scale-105 text-center"
           >
             RSVP
           </a>
           <a
             href="#events"
-            className="rounded-full border border-gold/60 px-8 py-3 text-sm font-medium uppercase tracking-[0.18em] text-gold transition-colors duration-300 hover:bg-gold/10"
+            className="w-full sm:w-auto rounded-full border border-gold/60 px-8 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-gold transition-colors duration-300 hover:bg-gold/10 text-center"
           >
             View Events
           </a>
