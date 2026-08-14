@@ -147,7 +147,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
               You have received a wedding invitation
             </p>
             <h2 className="mt-1 font-display text-lg font-light tracking-[0.15em] text-amber-100/95 sm:text-xl">
-              Nithin &amp; Lakshmi
+              Lakshmi &amp; Nithin
             </h2>
           </div>
 
@@ -182,7 +182,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
                 boxShadow: "0 30px 60px -25px rgb(0 0 0 / 0.55)",
               }}
             >
-              <p className="font-malayalam text-[10px] font-bold tracking-[0.3em] text-amber-800">
+              <p className="font-malayalam text-[22px] font-bold  text-amber-800">
                 വിവാഹ ക്ഷണം
               </p>
               <h2 className="mt-3 font-display text-3xl font-semibold text-amber-950 md:text-4xl">

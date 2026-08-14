@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 
 import { SectionHeading } from "./SectionHeading";
-import placeholder from "@/assets/gallery-placeholder.svg";
+import placeholder from "@/assets/fixing.jpeg";
 
 const firstMeeting = placeholder;
 const coffeeDate = placeholder;

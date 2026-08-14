@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Chilanka&family=Playwrite+IN+Guides&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -20,7 +21,7 @@
 
   --font-display: "Cormorant Garamond", "Georgia", serif;
   --font-body: "Outfit", "Manjari", system-ui, sans-serif;
-  --font-malayalam: "Manjari", "Outfit", sans-serif;
+  --font-malayalam: "Chilanka", "Manjari", cursive;
   --font-hand: "Chilanka", "Manjari", cursive;
 
   --color-background: var(--background);

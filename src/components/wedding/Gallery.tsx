@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { SectionHeading } from "./SectionHeading";
-import placeholder from "@/assets/gallery-placeholder.svg";
+import placeholder from "@/assets/fixing.jpeg";
 
 const backwaters = placeholder;
 const bride = placeholder;
