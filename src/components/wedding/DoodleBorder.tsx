@@ -37,6 +37,18 @@ const DOODLE_CSS = `
   75%  { transform: rotate(calc(var(--sway-amount, 4deg) * -0.6)); }
 }
 
+/* Wind gust → lean → gravity droop → spring back */
+@keyframes wind-flower {
+  0%   { transform: rotate(0deg) translateX(0); }
+  15%  { transform: rotate(var(--wind-lean, 12deg)) translateX(var(--wind-push, 3px)); }
+  30%  { transform: rotate(var(--wind-peak, 18deg)) translateX(var(--wind-push2, 5px)); }
+  45%  { transform: rotate(var(--wind-droop, 14deg)) translateX(var(--wind-push, 3px)) translateY(2px); }
+  60%  { transform: rotate(var(--wind-rebound, -6deg)) translateX(-1px); }
+  75%  { transform: rotate(var(--wind-settle, -3deg)) translateX(0); }
+  85%  { transform: rotate(2deg) translateX(1px); }
+  100% { transform: rotate(0deg) translateX(0); }
+}
+
 /* Wind streaks */
 @keyframes wind-streak {
   0%   { transform: translateX(-20px) scaleX(0); opacity: 0; }
@@ -45,6 +57,62 @@ const DOODLE_CSS = `
   100% { opacity: 0; transform: translateX(var(--streak-travel2, 140px)) scaleX(0.3); }
 }
 `;
+
+/* ── Corner Wind-Swaying Doodle Flower ─────────────────── */
+function DoodleCornerFlower({
+  x, y, size, color, delay, swayDeg,
+}: {
+  x: number; y: number; size: number; color: string; delay: number; swayDeg: number;
+}) {
+  const petals = 5;
+  const stemBaseY = y + size * 1.5;
+  return (
+    <g
+      style={{
+        transformOrigin: `${x}px ${stemBaseY}px`,
+        ["--wind-lean" as string]: `${swayDeg * 1.8}deg`,
+        ["--wind-peak" as string]: `${swayDeg * 2.5}deg`,
+        ["--wind-droop" as string]: `${swayDeg * 2.0}deg`,
+        ["--wind-rebound" as string]: `${-swayDeg * 0.9}deg`,
+        ["--wind-settle" as string]: `${-swayDeg * 0.4}deg`,
+        ["--wind-push" as string]: `${swayDeg * 0.6}px`,
+        ["--wind-push2" as string]: `${swayDeg * 1.0}px`,
+        animation: `flower-bloom 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}s both,
+                    wind-flower ${3 + delay * 0.6}s cubic-bezier(0.4, 0, 0.2, 1) infinite ${delay + 0.9}s`,
+      } as React.CSSProperties}
+    >
+      {/* Doodle Stem */}
+      <path
+        d={`M${x},${y} Q${x + (swayDeg > 0 ? 3 : -3)},${y + size * 0.75} ${x},${stemBaseY}`}
+        stroke="#1a5c2a" strokeWidth="1.3" strokeLinecap="round" opacity="0.7"
+        style={{ filter: "url(#doodleRough)" }}
+      />
+      {/* Petals */}
+      {Array.from({ length: petals }, (_, i) => {
+        const angle = (i / petals) * 360;
+        const px = x + Math.cos((angle * Math.PI) / 180) * size * 0.48;
+        const py = y + Math.sin((angle * Math.PI) / 180) * size * 0.48;
+        return (
+          <ellipse
+            key={i}
+            cx={px} cy={py}
+            rx={size * 0.4} ry={size * 0.24}
+            fill={color} fillOpacity="0.65"
+            stroke={color} strokeWidth="0.8" strokeOpacity="0.9"
+            transform={`rotate(${angle} ${px} ${py})`}
+            style={{ filter: "url(#doodleRough)" }}
+          />
+        );
+      })}
+      {/* Center */}
+      <circle
+        cx={x} cy={y} r={size * 0.2}
+        fill="#f59e0b" fillOpacity="0.9"
+        stroke="#b8860b" strokeWidth="0.7"
+      />
+    </g>
+  );
+}
 
 /* ── Small red vine flower ───────────────────────────────── */
 function VineFlower({
@@ -296,6 +364,31 @@ function VineBorder() {
       <VineLeaf cx={60} cy={586} size={7} rot={150} delay={1.6} />
       <VineLeaf cx={200} cy={590} size={6} rot={-155} delay={2.0} />
       <VineLeaf cx={340} cy={588} size={7} rot={160} delay={2.5} />
+
+      {/* ─── 4 CORNERS DOODLE FLOWER CLUSTERS (WIND SWAYING) ─── */}
+      {/* Top-Left Corner Cluster */}
+      <DoodleCornerFlower x={24} y={30} size={15} color="#e879a0" delay={0.2} swayDeg={6} />
+      <DoodleCornerFlower x={44} y={22} size={12} color="#d4a0c8" delay={0.5} swayDeg={4} />
+      <DoodleCornerFlower x={22} y={54} size={13} color="#f43f5e" delay={0.8} swayDeg={5} />
+      <DoodleCornerFlower x={52} y={44} size={10} color="#fb7185" delay={1.1} swayDeg={3} />
+
+      {/* Top-Right Corner Cluster */}
+      <DoodleCornerFlower x={376} y={30} size={15} color="#e879a0" delay={0.4} swayDeg={-5} />
+      <DoodleCornerFlower x={356} y={22} size={12} color="#d4a0c8" delay={0.7} swayDeg={-4} />
+      <DoodleCornerFlower x={378} y={54} size={13} color="#f43f5e" delay={1.0} swayDeg={-6} />
+      <DoodleCornerFlower x={348} y={44} size={10} color="#fb7185" delay={1.3} swayDeg={-3} />
+
+      {/* Bottom-Left Corner Cluster */}
+      <DoodleCornerFlower x={24} y={570} size={15} color="#e879a0" delay={0.6} swayDeg={6} />
+      <DoodleCornerFlower x={44} y={578} size={12} color="#e8a878" delay={0.9} swayDeg={4} />
+      <DoodleCornerFlower x={22} y={546} size={13} color="#f43f5e" delay={1.2} swayDeg={5} />
+      <DoodleCornerFlower x={52} y={556} size={10} color="#d4a0c8" delay={1.5} swayDeg={3} />
+
+      {/* Bottom-Right Corner Cluster */}
+      <DoodleCornerFlower x={376} y={570} size={15} color="#e879a0" delay={0.8} swayDeg={-6} />
+      <DoodleCornerFlower x={356} y={578} size={12} color="#e8a878" delay={1.1} swayDeg={-4} />
+      <DoodleCornerFlower x={378} y={546} size={13} color="#f43f5e" delay={1.4} swayDeg={-5} />
+      <DoodleCornerFlower x={348} y={556} size={10} color="#d4a0c8" delay={1.7} swayDeg={-3} />
     </svg>
   );
 }
