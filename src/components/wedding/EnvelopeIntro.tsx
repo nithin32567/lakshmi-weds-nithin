@@ -1,16 +1,7 @@
 import { useAnimate } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleField } from "@/components/wedding/ParticleField";
-
-/**
- * Cinematic envelope → website transition.
- *
- * Layering (strict):
- *   envelope back .......... z-1
- *   website card ........... z-2  (sits inside the pocket, z-10 after extraction)
- *   envelope front pocket .. z-3
- *   envelope top flap ...... z-4
- */
+import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
 
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
 const POWER1_IN_OUT = [0.45, 0, 0.55, 1] as const;
@@ -26,6 +17,19 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
   const [done, setDone] = useState(false);
   const [playing, setPlaying] = useState(false);
   const started = useRef(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio(bgmFile);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   /* Lock scroll while the intro is on screen */
   useEffect(() => {
@@ -47,6 +51,9 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
   }, [onComplete]);
 
   const play = useCallback(async () => {
+    if (audioRef.current) {
+      audioRef.current.play().catch(console.warn);
+    }
     if (started.current) return;
     started.current = true;
     setPlaying(true);
@@ -93,6 +100,9 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
   }, [animate, onComplete, scope]);
 
   const handleSkip = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.play().catch(console.warn);
+    }
     document.body.style.overflow = "";
     setDone(true);
     onComplete?.();
