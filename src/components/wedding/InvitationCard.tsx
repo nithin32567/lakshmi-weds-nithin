@@ -8,11 +8,32 @@ import { DoodleBorder } from "./DoodleBorder";
 
 /* ─── Butterflies (reduced to 4 for minimalism) ──────────── */
 
+/* ─── Butterflies (entering from all directions around the card) ─ */
+
 const BUTTERFLY_DEFS = [
-  { id: 1, dx: -160, dy: -380, delay: 0.05, dur: 7.5, size: 34, hue: "#c084fc", light: "#f3e8ff" },
-  { id: 2, dx: 150, dy: -430, delay: 0.35, dur: 8, size: 26, hue: "#a78bfa", light: "#ede9fe" },
-  { id: 3, dx: -60, dy: -470, delay: 0.6, dur: 9, size: 38, hue: "#e879f9", light: "#fdf4ff" },
-  { id: 4, dx: 210, dy: -320, delay: 0.15, dur: 6.5, size: 22, hue: "#818cf8", light: "#eef2ff" },
+  // Top-Left corner entry
+  { id: 1, startOffsetX: -360, startOffsetY: -300, dx: 520, dy: 420, delay: 0.05, dur: 7.5, size: 34, hue: "#c084fc", light: "#f3e8ff" },
+  { id: 2, startOffsetX: -240, startOffsetY: -380, dx: 420, dy: 460, delay: 0.6, dur: 8.2, size: 28, hue: "#f59e0b", light: "#fef3c7" },
+
+  // Top-Right corner entry
+  { id: 3, startOffsetX: 380, startOffsetY: -280, dx: -540, dy: 400, delay: 0.2, dur: 7.0, size: 38, hue: "#f43f5e", light: "#ffe4e6" },
+  { id: 4, startOffsetX: 260, startOffsetY: -360, dx: -420, dy: 480, delay: 1.0, dur: 8.5, size: 26, hue: "#e879f9", light: "#fdf4ff" },
+
+  // Bottom-Left corner entry
+  { id: 5, startOffsetX: -380, startOffsetY: 260, dx: 500, dy: -420, delay: 0.35, dur: 7.2, size: 32, hue: "#38bdf8", light: "#e0f2fe" },
+  { id: 6, startOffsetX: -260, startOffsetY: 350, dx: 400, dy: -500, delay: 1.3, dur: 8.8, size: 30, hue: "#a78bfa", light: "#ede9fe" },
+
+  // Bottom-Right corner entry
+  { id: 7, startOffsetX: 360, startOffsetY: 280, dx: -480, dy: -440, delay: 0.5, dur: 7.8, size: 36, hue: "#fb7185", light: "#ffe4e6" },
+  { id: 8, startOffsetX: 240, startOffsetY: 380, dx: -380, dy: -520, delay: 1.6, dur: 8.4, size: 24, hue: "#2dd4bf", light: "#ccfbf1" },
+
+  // Left Edge entry (flies across right)
+  { id: 9, startOffsetX: -450, startOffsetY: -40, dx: 580, dy: -180, delay: 0.15, dur: 6.8, size: 34, hue: "#f59e0b", light: "#fef3c7" },
+  { id: 10, startOffsetX: -420, startOffsetY: 120, dx: 520, dy: -280, delay: 1.1, dur: 7.6, size: 28, hue: "#818cf8", light: "#eef2ff" },
+
+  // Right Edge entry (flies across left)
+  { id: 11, startOffsetX: 450, startOffsetY: 40, dx: -580, dy: -160, delay: 0.75, dur: 7.4, size: 36, hue: "#e879f9", light: "#fdf4ff" },
+  { id: 12, startOffsetX: 400, startOffsetY: -140, dx: -500, dy: 320, delay: 1.8, dur: 8.0, size: 30, hue: "#c084fc", light: "#f3e8ff" },
 ];
 
 const WING_CSS = `
@@ -82,8 +103,10 @@ function ButterflyIcon({ hue, light, size }: { hue: string; light: string; size:
 }
 
 function FloatingButterfly({
-  startX,
-  startY,
+  centerX,
+  centerY,
+  startOffsetX,
+  startOffsetY,
   dx,
   dy,
   delay,
@@ -92,8 +115,10 @@ function FloatingButterfly({
   hue,
   light,
 }: {
-  startX: number;
-  startY: number;
+  centerX: number;
+  centerY: number;
+  startOffsetX: number;
+  startOffsetY: number;
   dx: number;
   dy: number;
   delay: number;
@@ -102,22 +127,25 @@ function FloatingButterfly({
   hue: string;
   light: string;
 }) {
+  const startX = centerX + startOffsetX;
+  const startY = centerY + startOffsetY;
+
   return (
     <motion.div
-      initial={{ x: startX, y: startY, opacity: 0, scale: 0.4 }}
+      initial={{ x: startX, y: startY, opacity: 0, scale: 0.3 }}
       animate={{
-        x: [startX, startX + dx * 0.45, startX + dx],
-        y: [startY, startY + dy * 0.4, startY + dy],
-        opacity: [0, 1, 0],
-        scale: [0.4, 1, 0.85],
-        rotate: [0, dx > 0 ? 14 : -14, dx > 0 ? -10 : 10],
+        x: [startX, startX + dx * 0.45 + (dy > 0 ? 35 : -35), startX + dx],
+        y: [startY, startY + dy * 0.55 + (dx > 0 ? -45 : 45), startY + dy],
+        opacity: [0, 0.95, 0.9, 0],
+        scale: [0.3, 1.05, 0.95, 0.6],
+        rotate: [0, dx > 0 ? 18 : -18, dx > 0 ? -12 : 12],
       }}
-      transition={{ duration: dur, delay, ease: "easeInOut", times: [0, 0.35, 1] }}
+      transition={{ duration: dur, delay, ease: "easeInOut", times: [0, 0.3, 0.7, 1] }}
       style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 60 }}
     >
       <motion.div
-        animate={{ x: [0, 16, -12, 0] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ x: [0, 18, -14, 0], y: [0, -8, 6, 0] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
       >
         <ButterflyIcon hue={hue} light={light} size={size} />
       </motion.div>
@@ -436,8 +464,8 @@ export function InvitationCard() {
             {BUTTERFLY_DEFS.map((b) => (
               <FloatingButterfly
                 key={b.id}
-                startX={butterflies.x}
-                startY={butterflies.y}
+                centerX={butterflies.x}
+                centerY={butterflies.y}
                 {...b}
               />
             ))}
