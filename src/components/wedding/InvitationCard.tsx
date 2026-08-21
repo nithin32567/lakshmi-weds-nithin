@@ -189,13 +189,13 @@ const panelSurface: React.CSSProperties = {
   backfaceVisibility: "hidden",
 };
 
-function NamesPanel() {
+function NamesPanel({ opened }: { opened?: boolean }) {
   return (
     <div
       className="relative flex h-full min-h-[32rem] flex-col items-center justify-center overflow-hidden px-8 py-12 text-center sm:min-h-[36rem] sm:px-12 sm:py-16 md:min-h-[38rem]"
     >
       {/* Doodle art border with animated flowers & leaves */}
-      <DoodleBorder />
+      <DoodleBorder active={opened} />
 
       {/* Subtle radial warmth */}
       <div
@@ -257,13 +257,13 @@ function NamesPanel() {
   );
 }
 
-function DetailsPanel() {
+function DetailsPanel({ opened }: { opened?: boolean }) {
   return (
     <div
       className="relative flex h-full min-h-[32rem] flex-col items-center justify-center overflow-hidden px-8 py-16 text-center sm:min-h-[36rem] sm:px-12 sm:py-20 md:min-h-[38rem]"
     >
       {/* Doodle art border with animated flowers & leaves */}
-      <DoodleBorder />
+      <DoodleBorder active={opened} />
 
       {/* Subtle radial warmth */}
       <div
@@ -474,7 +474,7 @@ export function InvitationCard() {
             className="relative origin-bottom"
             style={panelSurface}
           >
-            <NamesPanel />
+            <NamesPanel opened={opened} />
             {crease("b")}
           </motion.div>
 
@@ -497,7 +497,7 @@ export function InvitationCard() {
             className="relative origin-top"
             style={panelSurface}
           >
-            <DetailsPanel />
+            <DetailsPanel opened={opened} />
             {crease("t")}
           </motion.div>
         </div>
@@ -524,7 +524,7 @@ export function InvitationCard() {
                 : "none",
             }}
           >
-            <NamesPanel />
+            <NamesPanel opened={opened} />
             {crease("r")}
           </motion.div>
 
@@ -549,7 +549,7 @@ export function InvitationCard() {
                 : "none",
             }}
           >
-            <DetailsPanel />
+            <DetailsPanel opened={opened} />
             {crease("l")}
           </motion.div>
 
