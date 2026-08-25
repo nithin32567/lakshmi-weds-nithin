@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 
 import { SectionHeading } from "./SectionHeading";
 import placeholder from "@/assets/fixing.jpeg";
+import bgImage from "@/assets/envelope-background.avif";
 
 const firstMeeting = placeholder;
 const coffeeDate = placeholder;
@@ -37,7 +38,14 @@ const MOMENTS = [
 export function LoveStory() {
   return (
     <section id="story" className="relative bg-teak-deep py-24 md:py-32">
-      <SectionHeading
+      <div className="absolute inset-0 bg-black/70" />
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      />
+
+      <div className="relative z-10">
+        <SectionHeading
         dark
         malayalam="ഞങ്ങളുടെ കഥ"
         title="Our Love Story"
@@ -97,6 +105,7 @@ export function LoveStory() {
             </li>
           ))}
         </ol>
+      </div>
       </div>
     </section>
   );

@@ -22,7 +22,9 @@ export function ParticleField({ density = 70 }: { density?: number }) {
     let parts: P[] = [];
 
     const seed = () => {
-      const count = Math.round(density * Math.min(1, w / 1200 + 0.45));
+      const isMobile = w < 768;
+      const targetDensity = isMobile ? Math.min(density, 38) : density;
+      const count = Math.round(targetDensity * Math.min(1, w / 1200 + 0.45));
       parts = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -63,12 +65,15 @@ export function ParticleField({ density = 70 }: { density?: number }) {
           if (p.x > w + 10) p.x = -10;
         }
         const alpha = p.a * (0.55 + 0.45 * Math.sin(p.tw));
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
-        g.addColorStop(0, `rgba(230, 198, 128, ${alpha})`);
-        g.addColorStop(1, "rgba(197, 160, 89, 0)");
-        ctx.fillStyle = g;
+        // Outer soft glow halo
+        ctx.fillStyle = `rgba(230, 198, 128, ${alpha * 0.35})`;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        // Inner bright ember core
+        ctx.fillStyle = `rgba(255, 238, 185, ${alpha * 0.95})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       }
       if (running) raf = requestAnimationFrame(draw);
@@ -94,5 +99,12 @@ export function ParticleField({ density = 70 }: { density?: number }) {
     };
   }, [density]);
 
-  return <canvas ref={ref} aria-hidden className="pointer-events-none absolute inset-0 size-full" />;
+  return (
+    <canvas
+      ref={ref}
+      aria-hidden
+      className="pointer-events-none absolute inset-0 size-full"
+      style={{ willChange: "transform", transform: "translateZ(0)" }}
+    />
+  );
 }

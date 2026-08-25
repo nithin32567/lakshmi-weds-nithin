@@ -70,6 +70,7 @@ function DoodleCornerFlower({
     <g
       style={{
         transformOrigin: `${x}px ${stemBaseY}px`,
+        willChange: "transform",
         ["--wind-lean" as string]: `${swayDeg * 1.8}deg`,
         ["--wind-peak" as string]: `${swayDeg * 2.5}deg`,
         ["--wind-droop" as string]: `${swayDeg * 2.0}deg`,
@@ -85,7 +86,6 @@ function DoodleCornerFlower({
       <path
         d={`M${x},${y} Q${x + (swayDeg > 0 ? 3 : -3)},${y + size * 0.75} ${x},${stemBaseY}`}
         stroke="#1a5c2a" strokeWidth="1.3" strokeLinecap="round" opacity="0.7"
-        style={{ filter: "url(#doodleRough)" }}
       />
       {/* Petals */}
       {Array.from({ length: petals }, (_, i) => {
@@ -100,7 +100,6 @@ function DoodleCornerFlower({
             fill={color} fillOpacity="0.65"
             stroke={color} strokeWidth="0.8" strokeOpacity="0.9"
             transform={`rotate(${angle} ${px} ${py})`}
-            style={{ filter: "url(#doodleRough)" }}
           />
         );
       })}
@@ -242,12 +241,6 @@ function VineBorder() {
       fill="none"
       aria-hidden
     >
-      <defs>
-        <filter id="doodleRough">
-          <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" result="turb" />
-          <feDisplacementMap in="SourceGraphic" in2="turb" scale="1.5" />
-        </filter>
-      </defs>
 
       {/* ─── Left curly vine ─────────────────────────── */}
       <path

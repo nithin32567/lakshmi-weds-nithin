@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { SectionHeading } from "./SectionHeading";
 import placeholder from "@/assets/fixing.jpeg";
+import Masonry from "./Masonry";
 
 const backwaters = placeholder;
 const bride = placeholder;
@@ -13,13 +14,20 @@ const hands = placeholder;
 const lamps = placeholder;
 
 const PHOTOS = [
-  { src: bride, alt: "Lakshmi in a traditional kasavu saree with temple jewellery", span: "md:row-span-2" },
-  { src: lamps, alt: "Rows of lit brass nilavilakku lamps at dusk", span: "" },
-  { src: hands, alt: "Henna-adorned hands exchanging garlands", span: "" },
-  { src: backwaters, alt: "Kerala backwaters at golden hour with a houseboat", span: "md:col-span-2" },
-  { src: groom, alt: "Nithin in a traditional mundu and gold-bordered shawl", span: "md:row-span-2" },
-  { src: elephant, alt: "Caparisoned temple elephant during a Kerala festival procession", span: "md:col-span-2" },
+  { src: bride, alt: "Lakshmi in a traditional kasavu saree with temple jewellery", height: 800 },
+  { src: lamps, alt: "Rows of lit brass nilavilakku lamps at dusk", height: 400 },
+  { src: hands, alt: "Henna-adorned hands exchanging garlands", height: 600 },
+  { src: backwaters, alt: "Kerala backwaters at golden hour with a houseboat", height: 500 },
+  { src: groom, alt: "Nithin in a traditional mundu and gold-bordered shawl", height: 900 },
+  { src: elephant, alt: "Caparisoned temple elephant during a Kerala festival procession", height: 550 },
 ];
+
+const masonryItems = PHOTOS.map((p, i) => ({
+  id: String(i),
+  img: p.src,
+  height: p.height,
+  alt: p.alt
+}));
 
 export function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
@@ -50,31 +58,19 @@ export function Gallery() {
         subtitle="Glimpses of the land, the light and the love that shaped this celebration."
       />
 
-      <div className="mx-auto mt-14 grid max-w-6xl auto-rows-[200px] grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:auto-rows-[220px] md:grid-cols-4">
-        {PHOTOS.map((p, i) => (
-          <motion.button
-            key={p.alt}
-            type="button"
-            onClick={() => setIndex(i)}
-            initial={{ opacity: 0, scale: 0.94 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.55, delay: (i % 4) * 0.07 }}
-            className={`group relative overflow-hidden rounded-2xl gold-hairline ${p.span}`}
-            aria-label={`Open photo: ${p.alt}`}
-          >
-            <img
-              src={p.src}
-              alt={p.alt}
-              loading="lazy"
-              className="size-full object-cover transition-transform duration-[900ms] group-hover:scale-110"
-            />
-            <span
-              aria-hidden
-              className="absolute inset-0 bg-teak-deep/0 transition-colors duration-500 group-hover:bg-teak-deep/25"
-            />
-          </motion.button>
-        ))}
+      <div className="mx-auto mt-14 max-w-6xl px-6 h-[600px] sm:h-[800px] md:h-[1000px] w-full">
+        <Masonry
+          items={masonryItems}
+          ease="power3.out"
+          duration={0.6}
+          stagger={0.05}
+          animateFrom="bottom"
+          scaleOnHover={true}
+          hoverScale={0.95}
+          blurToFocus={true}
+          colorShiftOnHover={false}
+          onItemClick={(item, index) => setIndex(index)}
+        />
       </div>
 
       <AnimatePresence>

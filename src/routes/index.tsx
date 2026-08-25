@@ -54,7 +54,7 @@ export function Index() {
           <Navbar />
           <Hero />
           <MeetUs />
-           <ParticleField density={80} />
+          <ParticleField density={80} />
           <InvitationCard />
           <LoveStory />
           <Gallery />

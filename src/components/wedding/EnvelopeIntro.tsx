@@ -2,6 +2,8 @@ import { useAnimate } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleField } from "@/components/wedding/ParticleField";
 import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
+import bgImage from "@/assets/background1.jpg";
+
 
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
 const POWER1_IN_OUT = [0.45, 0, 0.55, 1] as const;
@@ -124,13 +126,29 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
           ref={scope}
           className="fixed inset-0 z-[300] select-none overflow-visible"
           style={{
-            background:
-              "radial-gradient(ellipse 110% 100% at 50% 45%, #182238 0%, #0d1526 60%, #060914 100%)",
             perspective: "1200px",
           }}
           role="dialog"
           aria-label="Wedding invitation envelope"
         >
+          {/* Background image with light dark overlay */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+            <img
+              src={bgImage}
+              alt=""
+              className="h-full w-full object-cover object-center"
+            />
+            {/* Dark overlay mask for visual depth and readability */}
+            <div className="absolute inset-0 bg-slate-950/60" />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 110% 100% at 50% 45%, rgba(24, 34, 56, 0.4) 0%, rgba(13, 21, 38, 0.7) 60%, rgba(6, 9, 20, 0.9) 100%)",
+              }}
+            />
+          </div>
+
           {/* Ambient particle canvas */}
           <ParticleField density={95} />
 

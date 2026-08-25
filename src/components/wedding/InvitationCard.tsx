@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import templateImg from "@/assets/krishna-radha.png";
-import { ParticleField } from "./ParticleField";
+import bgImage from "@/assets/bg-3.jpg";
+import rightLeafBg from "@/assets/couple-right-leaf.jpg";
 import { DoodleBorder } from "./DoodleBorder";
 
 /* ─── Butterflies (reduced to 4 for minimalism) ──────────── */
@@ -141,7 +142,7 @@ function FloatingButterfly({
         rotate: [0, dx > 0 ? 18 : -18, dx > 0 ? -12 : 12],
       }}
       transition={{ duration: dur, delay, ease: "easeInOut", times: [0, 0.3, 0.7, 1] }}
-      style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 60 }}
+      style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 60, willChange: "transform" }}
     >
       <motion.div
         animate={{ x: [0, 18, -14, 0], y: [0, -8, 6, 0] }}
@@ -290,6 +291,15 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
     <div
       className="relative flex h-full min-h-[32rem] flex-col items-center justify-center overflow-hidden px-8 py-16 text-center sm:min-h-[36rem] sm:px-12 sm:py-20 md:min-h-[38rem]"
     >
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${rightLeafBg})` }}
+      />
+      {/* Yellow overlay with bright base to keep details readable */}
+      <div className="absolute inset-0 bg-yellow-200/10" />
+      <div className="absolute inset-0 bg-[#faf7f2]/55" />
+
       {/* Doodle art border with animated flowers & leaves */}
       <DoodleBorder active={opened} />
 
@@ -382,9 +392,7 @@ export function InvitationCard() {
 
   useEffect(() => setMounted(true), []);
 
-  /* Open when the section's vertical center is near the viewport center,
-     close when the user scrolls away. This ensures the full fold/unfold
-     animation is visible on screen. */
+  /* Open when the section is scrolled into view using high-performance IntersectionObserver */
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -392,39 +400,36 @@ export function InvitationCard() {
     let openTimer: ReturnType<typeof setTimeout> | null = null;
     let butterflyTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const check = () => {
-      const rect = section.getBoundingClientRect();
-      const sectionCenter = rect.top + rect.height / 2;
-      const viewportCenter = window.innerHeight / 2;
-      // Trigger when section center is within ±40% of viewport height from viewport center
-      const threshold = window.innerHeight * 0.4;
-      const inZone = Math.abs(sectionCenter - viewportCenter) < threshold;
-
-      if (inZone && !opened) {
-        openTimer = setTimeout(() => setOpened(true), 400);
-        butterflyTimer = setTimeout(() => {
-          const r = cardRef.current?.getBoundingClientRect();
-          if (r) setButterflies({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-        }, 1200);
-      } else if (!inZone && opened) {
-        if (openTimer) clearTimeout(openTimer);
-        if (butterflyTimer) clearTimeout(butterflyTimer);
-        openTimer = null;
-        butterflyTimer = null;
-        setOpened(false);
-        setButterflies(null);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          openTimer = setTimeout(() => setOpened(true), 350);
+          butterflyTimer = setTimeout(() => {
+            const r = cardRef.current?.getBoundingClientRect();
+            if (r) setButterflies({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+          }, 1100);
+        } else {
+          if (openTimer) clearTimeout(openTimer);
+          if (butterflyTimer) clearTimeout(butterflyTimer);
+          openTimer = null;
+          butterflyTimer = null;
+          setOpened(false);
+          setButterflies(null);
+        }
+      },
+      {
+        threshold: 0.25,
       }
-    };
+    );
 
-    window.addEventListener("scroll", check, { passive: true });
-    check(); // initial check
+    observer.observe(section);
 
     return () => {
-      window.removeEventListener("scroll", check);
+      observer.disconnect();
       if (openTimer) clearTimeout(openTimer);
       if (butterflyTimer) clearTimeout(butterflyTimer);
     };
-  }, [opened]);
+  }, []);
 
   /* Realistic book-fold transition */
   const openTransition = {
@@ -454,7 +459,11 @@ export function InvitationCard() {
         }}
       />
 
-      <ParticleField density={90} />
+      {/* Background Image Overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      />
 
       {/* Butterflies */}
       {mounted &&
