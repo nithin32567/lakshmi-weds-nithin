@@ -332,7 +332,7 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
             <p className="font-body text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
               Saturday
             </p>
-            <p className="mt-1 text-[0.55rem] text-amber-800/60 sm:text-[0.7rem]">10:00 – 11:00 AM</p>
+            <p className="mt-1 text-[0.55rem] text-amber-800/60 sm:text-[0.7rem]">11:00 AM – 12:00 PM</p>
           </div>
           <div className="flex h-full items-center border-x border-amber-800/15 px-5 py-3">
             <span className="font-display text-3xl font-semibold text-amber-900 sm:text-4xl">12</span>
