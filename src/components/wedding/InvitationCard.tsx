@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 
 import templateImg from "@/assets/krishna-radha.png";
 import bgImage from "@/assets/bg-3.jpg";
-import rightLeafBg from "@/assets/couple-right-leaf.jpg";
+import rightLeafBg from "@/assets/couple-right-leaf.JPG";
 import { DoodleBorder } from "./DoodleBorder";
 
 /* ─── Butterflies (reduced to 4 for minimalism) ──────────── */
@@ -221,7 +221,7 @@ const panelSurface: React.CSSProperties = {
 function NamesPanel({ opened }: { opened?: boolean }) {
   return (
     <div
-      className="relative flex h-full min-h-[32rem] flex-col items-center justify-center overflow-hidden px-8 py-12 text-center sm:min-h-[36rem] sm:px-12 sm:py-16 md:min-h-[38rem]"
+      className="relative flex h-full min-h-[28rem] flex-col items-center justify-center overflow-hidden px-2 py-6 text-center sm:min-h-[36rem] sm:px-12 sm:py-16 md:min-h-[38rem]"
     >
       {/* Doodle art border with animated flowers & leaves */}
       <DoodleBorder active={opened} />
@@ -249,7 +249,7 @@ function NamesPanel({ opened }: { opened?: boolean }) {
         <OrnamentalDivider className="my-4" />
 
         {/* Krishna-Radha illustration */}
-        <div className="my-4 w-40 sm:w-48 md:w-52">
+        <div className="my-4 w-32 sm:my-4 sm:w-48 md:w-52">
           <img
             src={templateImg}
             alt="Krishna and Radha"
@@ -261,23 +261,23 @@ function NamesPanel({ opened }: { opened?: boolean }) {
           />
         </div>
 
-        <p className="font-malayalam text-sm text-amber-950/60">ചിങ്ങത്തിൽ</p>
-        <p className="font-malayalam text-base font-semibold tracking-wide text-amber-950/75 sm:text-lg">
+        <p className="font-malayalam text-[0.7rem] text-amber-950/60 sm:text-sm">ചിങ്ങത്തിൽ</p>
+        <p className="font-malayalam text-[0.8rem] font-semibold tracking-wide text-amber-950/75 sm:text-lg">
           താലികെട്ട്
         </p>
 
-        <h2 className="mt-4 font-hand text-[2.5rem] leading-[1.1] text-amber-900 sm:text-5xl md:text-6xl">
-          ലക്ഷ്മി
+        <h2 className="mt-3 font-hand text-[2rem] leading-[1.1] text-amber-900 sm:mt-4 sm:text-5xl md:text-6xl">
+      നിതിൻ     
         </h2>
 
-        <div className="my-2 flex items-center justify-center gap-3">
-          <span className="h-px w-8 bg-amber-700/30" />
+        <div className="my-2 flex items-center justify-center gap-2 sm:my-2 sm:gap-3">
+          <span className="h-px w-6 bg-amber-700/30 sm:w-8" />
           <span className="font-display text-xl italic text-amber-700/60 sm:text-2xl">&amp;</span>
-          <span className="h-px w-8 bg-amber-700/30" />
+          <span className="h-px w-6 bg-amber-700/30 sm:w-8" />
         </div>
 
-        <h2 className="font-hand text-[2.5rem] leading-[1.1] text-amber-900 sm:text-5xl md:text-6xl">
-          നിതിൻ
+        <h2 className="font-hand text-[2rem] leading-[1.1] text-amber-900 sm:text-5xl md:text-6xl">
+          ലക്ഷ്മി
         </h2>
 
         <OrnamentalDivider className="mt-5" />
@@ -289,7 +289,7 @@ function NamesPanel({ opened }: { opened?: boolean }) {
 function DetailsPanel({ opened }: { opened?: boolean }) {
   return (
     <div
-      className="relative flex h-full min-h-[32rem] flex-col items-center justify-center overflow-hidden px-8 py-16 text-center sm:min-h-[36rem] sm:px-12 sm:py-20 md:min-h-[38rem]"
+      className="relative flex h-full min-h-[28rem] flex-col items-center justify-center overflow-hidden px-2 py-6 text-center sm:min-h-[36rem] sm:px-12 sm:py-20 md:min-h-[38rem]"
     >
       {/* Background Image */}
       <div
@@ -297,7 +297,7 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
         style={{ backgroundImage: `url(${rightLeafBg})` }}
       />
       {/* Yellow overlay with bright base to keep details readable */}
-      <div className="absolute inset-0 bg-yellow-200/10" />
+      <div className="absolute inset-0 bg-black0" />
       <div className="absolute inset-0 bg-[#faf7f2]/55" />
 
       {/* Doodle art border with animated flowers & leaves */}
@@ -327,35 +327,35 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
         </p>
 
         {/* Date grid */}
-        <div className="mx-auto mt-8 grid w-full grid-cols-[1fr_auto_1fr] items-center rounded-md border border-amber-800/15 bg-white/40 backdrop-blur-sm">
-          <div className="px-3 py-3">
-            <p className="font-body text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
+        <div className="mx-auto mt-6 grid w-full grid-cols-[1fr_auto_1fr] items-center rounded-md border border-amber-800/15 bg-white/40 backdrop-blur-sm sm:mt-8">
+          <div className="px-2 py-2 sm:px-3 sm:py-3">
+            <p className="font-body text-[0.45rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
               Saturday
             </p>
-            <p className="mt-1 text-[0.55rem] text-amber-800/60 sm:text-[0.7rem]">11:00 AM – 12:00 PM</p>
+            <p className="mt-1 text-[0.45rem] text-amber-800/60 sm:text-[0.7rem]">11:00 AM – 12:00 PM</p>
           </div>
-          <div className="flex h-full items-center border-x border-amber-800/15 px-5 py-3">
+          <div className="flex h-full items-center border-x border-amber-800/15 px-3 py-2 sm:px-5 sm:py-3">
             <span className="font-display text-3xl font-semibold text-amber-900 sm:text-4xl">12</span>
           </div>
-          <div className="px-3 py-3">
-            <p className="font-body text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
+          <div className="px-2 py-2 sm:px-3 sm:py-3">
+            <p className="font-body text-[0.45rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
               September
             </p>
-            <p className="mt-1 text-[0.55rem] text-amber-800/60 sm:text-[0.7rem]">2026</p>
+            <p className="mt-1 text-[0.45rem] text-amber-800/60 sm:text-[0.7rem]">2026</p>
           </div>
         </div>
 
-        <p className="mt-6 font-malayalam text-xs text-amber-950/65 sm:text-sm">1202 ചിങ്ങം 27</p>
-        <p className="mt-1 font-malayalam text-[0.7rem] leading-relaxed text-amber-900/50 sm:text-xs">
+        <p className="mt-6 font-malayalam text-[0.65rem] text-amber-950/65 sm:text-sm">1202 ചിങ്ങം 27</p>
+        <p className="mt-1 font-malayalam text-[0.6rem] leading-relaxed text-amber-900/50 sm:text-xs">
           ശുഭമുഹൂർത്തത്തിൽ വിവാഹിതരാകുന്നു
         </p>
 
-        <OrnamentalDivider className="my-6" />
+        <OrnamentalDivider className="my-5 sm:my-6" />
 
         <p className="font-body text-[0.55rem] uppercase tracking-[0.3em] text-amber-800/60 sm:text-[0.65rem]">
           Venue
         </p>
-        <p className="mt-1 font-malayalam text-xs text-amber-950/70 sm:text-sm">
+        <p className="mt-1 font-malayalam text-[0.7rem] text-amber-950/70 sm:text-sm">
           കല്യാണമണ്ഡപം, കൊച്ചി
         </p>
       </div>
@@ -484,7 +484,7 @@ export function InvitationCard() {
 
       <div
         ref={cardRef}
-        className="relative mx-auto w-full px-0 sm:w-[min(92vw,34rem)] sm:px-0 md:w-[min(92vw,58rem)]"
+        className="relative mx-auto w-[calc(100%-1rem)] sm:w-[min(92vw,34rem)] md:w-[min(92vw,58rem)]"
         style={{ perspective: "1800px" }}
       >
         {/* Soft shadow underneath */}
@@ -494,54 +494,9 @@ export function InvitationCard() {
           style={{ background: "rgba(40, 20, 10, 0.25)" }}
         />
 
-        {/* ─── Mobile — vertical top/bottom fold ──────────── */}
+        {/* ─── Realistic left/right book fold for all screens ───── */}
         <div
-          className="relative overflow-hidden rounded-none shadow-[0_30px_70px_-30px_rgba(30,15,5,0.5)] sm:rounded-xl md:hidden"
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {/* Top panel — Names — folds upward like a greeting card */}
-          <motion.div
-            initial={{ rotateX: -92, opacity: 0 }}
-            animate={
-              opened
-                ? { rotateX: 0, opacity: 1 }
-                : { rotateX: -92, opacity: 0 }
-            }
-            transition={opened ? openTransition : closeTransition}
-            className="relative origin-bottom"
-            style={panelSurface}
-          >
-            <NamesPanel opened={opened} />
-            {crease("b")}
-          </motion.div>
-
-          {/* Center crease line */}
-          <div aria-hidden className="h-px w-full bg-amber-800/20" />
-
-          {/* Bottom panel — Details — folds downward */}
-          <motion.div
-            initial={{ rotateX: 92, opacity: 0 }}
-            animate={
-              opened
-                ? { rotateX: 0, opacity: 1 }
-                : { rotateX: 92, opacity: 0 }
-            }
-            transition={
-              opened
-                ? { ...openTransition, delay: 0.15 }
-                : closeTransition
-            }
-            className="relative origin-top"
-            style={panelSurface}
-          >
-            <DetailsPanel opened={opened} />
-            {crease("t")}
-          </motion.div>
-        </div>
-
-        {/* ─── Desktop — realistic left/right book fold ───── */}
-        <div
-          className="relative hidden overflow-hidden rounded-xl md:grid md:grid-cols-2"
+          className="relative grid grid-cols-2 overflow-hidden rounded-xl"
           style={{ transformStyle: "preserve-3d" }}
         >
           {/* Left leaf — Names — swings from right edge like a real book cover */}

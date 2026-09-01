@@ -14,6 +14,7 @@ const LoveStory = lazy(() => import("@/components/wedding/LoveStory").then((m) =
 const MeetUs = lazy(() => import("@/components/wedding/MeetUs").then((m) => ({ default: m.MeetUs })));
 const Navbar = lazy(() => import("@/components/wedding/Navbar").then((m) => ({ default: m.Navbar })));
 const RSVP = lazy(() => import("@/components/wedding/RSVP").then((m) => ({ default: m.RSVP })));
+const VenueMap = lazy(() => import("@/components/wedding/VenueMap").then((m) => ({ default: m.VenueMap })));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -56,6 +57,7 @@ export function Index() {
           <MeetUs />
           <ParticleField density={80} />
           <InvitationCard />
+          <VenueMap />
           <LoveStory />
           <Gallery />
           <RSVP />

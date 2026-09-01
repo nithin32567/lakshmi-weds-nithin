@@ -2,7 +2,7 @@ import { useAnimate } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleField } from "@/components/wedding/ParticleField";
 import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
-import bgImage from "@/assets/background1.jpg";
+import bgImage from "@/assets/background1.jpeg";
 
 
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
@@ -43,14 +43,6 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
     };
   }, [done]);
 
-  /* Reduced-motion fast-exit */
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.body.style.overflow = "";
-      setDone(true);
-      onComplete?.();
-    }
-  }, [onComplete]);
 
   const play = useCallback(async () => {
     if (audioRef.current) {
