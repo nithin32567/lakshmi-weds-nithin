@@ -14,7 +14,7 @@ export function MeetUs() {
             "radial-gradient(100% 70% at 50% 10%, color-mix(in oklab, var(--sage) 18%, transparent), transparent 65%), radial-gradient(120% 80% at 50% 110%, color-mix(in oklab, var(--gold) 16%, transparent), transparent 60%)",
         }}
       />
-      
+
       <ParticleField density={80} />
 
       <div className="relative z-10 w-full max-w-6xl px-6 md:px-12">
@@ -65,17 +65,17 @@ export function MeetUs() {
               <div className="absolute -top-6 -left-6 w-12 h-12 rounded-full bg-gold/10 mix-blend-screen" />
               <div className="absolute -bottom-4 -right-2 w-8 h-8 rounded-full bg-gold/15 mix-blend-screen" />
             </div>
-            
+
             <h3 className="font-hand text-5xl md:text-6xl text-gold mb-3">Nithin</h3>
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-ivory/70 mb-10">The Groom</p>
-            
+
             {/* Detail Box */}
             <div className="w-full rounded-xl border border-gold/10 bg-[#211a17]/60 p-8 md:p-10 backdrop-blur-sm">
               <p className="text-[11px] uppercase tracking-widest text-gold/60 mb-4">Son of</p>
-              <p className="font-display text-2xl text-ivory mb-8">Mr. Prathapan &amp; Mrs. Prathapan</p>
+              <p className="font-display text-2xl text-ivory mb-8">Mr. Prathapan &amp; Manju Prathapan</p>
               <div className="text-sm tracking-wide text-ivory/50 space-y-1.5 font-light">
-                <p>Kochi</p>
-                <p>Kerala</p>
+                <p>Pulikkarayil House, Elamgulam</p>
+                <p>Kottayam, Kerala</p>
               </div>
             </div>
           </motion.div>
@@ -94,17 +94,17 @@ export function MeetUs() {
               <div className="absolute -top-4 -right-6 w-12 h-12 rounded-full bg-[#e47d8b]/10 mix-blend-screen" />
               <div className="absolute -bottom-2 -left-4 w-8 h-8 rounded-full bg-[#e47d8b]/15 mix-blend-screen" />
             </div>
-            
+
             <h3 className="font-hand text-5xl md:text-6xl text-[#e47d8b] mb-3">Lakshmi</h3>
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-ivory/70 mb-10">The Bride</p>
-            
+
             {/* Detail Box */}
             <div className="w-full rounded-xl border border-[#e47d8b]/10 bg-[#211a17]/60 p-8 md:p-10 backdrop-blur-sm">
               <p className="text-[11px] uppercase tracking-widest text-[#e47d8b]/60 mb-4">Daughter of</p>
-              <p className="font-display text-2xl text-ivory mb-8">Mr. Santhosh &amp; Mrs. Santhosh</p>
+              <p className="font-display text-2xl text-ivory mb-8">Mr. Santhosh &amp; Rema Santhosh</p>
               <div className="text-sm tracking-wide text-ivory/50 space-y-1.5 font-light">
-                <p>Chalakkudi</p>
-                <p>Kerala</p>
+                <p>Kizhakkudan House, Vellanchira</p>
+                <p>Thrissur, Kerala</p>
               </div>
             </div>
           </motion.div>

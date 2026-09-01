@@ -2,7 +2,7 @@ import { useAnimate } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleField } from "@/components/wedding/ParticleField";
 import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
-import bgImage from "@/assets/background1.webp";
+import bgImage from "@/assets/envelope_bg.JPG";
 
 
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
@@ -147,12 +147,12 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
               className="h-full w-full object-cover object-center"
             />
             {/* Dark overlay mask for visual depth and readability */}
-            <div className="absolute inset-0 bg-slate-950/60" />
+            <div className="absolute inset-0 bg-slate-950/20" />
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(ellipse 110% 100% at 50% 45%, rgba(24, 34, 56, 0.4) 0%, rgba(13, 21, 38, 0.7) 60%, rgba(6, 9, 20, 0.9) 100%)",
+                  "radial-gradient(ellipse 110% 100% at 50% 45%, rgba(24, 34, 56, 0.1) 0%, rgba(13, 21, 38, 0.4) 60%, rgba(6, 9, 20, 0.7) 100%)",
               }}
             />
           </div>
@@ -167,7 +167,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
           <AmbientSparkles />
 
           {/* Skip button */}
-          <div className="absolute top-6 right-6 z-[350]">
+          {/* <div className="absolute top-6 right-6 z-[350]">
             <button
               type="button"
               onClick={(e) => {
@@ -194,7 +194,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
             >
               Skip Intro
             </button>
-          </div>
+          </div> */}
 
           {/* Header */}
           <div className="absolute top-8 left-1/2 z-10 -translate-x-1/2 text-center sm:top-12">

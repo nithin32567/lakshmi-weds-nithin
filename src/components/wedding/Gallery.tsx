@@ -19,7 +19,7 @@ for (const path in modules) {
 
 const PHOTOS = Array.from(imageMap.values()).map((src, i) => ({
   src,
-  alt: "Memories",
+  alt: "",
   height: 600 + (i % 3) * 200, 
 }));
 
@@ -54,9 +54,9 @@ export function Gallery() {
   return (
     <section id="gallery" className="bg-ivory py-24 md:py-32">
       <SectionHeading
-        malayalam="ഓർമ്മകൾ"
-        title="Moments & Memories"
-        subtitle="Glimpses of the land, the light and the love that shaped this celebration."
+        malayalam=""
+        title="Frames of Our Story"
+        subtitle="A visual celebration of the steps, smiles, and stories that brought us side by side."
       />
 
       <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-6 w-full">

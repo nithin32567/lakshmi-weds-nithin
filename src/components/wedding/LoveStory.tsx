@@ -5,11 +5,11 @@ import bgImage from "@/assets/masonary/DSC08240-optimized.webp";
 
 // ── Real assets ───────────────────────────────────────────────────────────────
 import sheYes from "@/assets/moments/DSC08993.JPG";
-import familyMeet1 from "@/assets/moments/image copy.png";
-import familyMeet2 from "@/assets/moments/image copy 2.png";
-import trip1 from "@/assets/moments/WhatsApp Image 2026-09-01 at 3.49.33 PM.jpeg";
-import trip2 from "@/assets/moments/image copy 8.png";
-import trip3 from "@/assets/moments/image copy 4 clean.png";
+import familyMeet1 from "@/assets/moments/image-copy.png";
+import familyMeet2 from "@/assets/moments/image-copy-2.png";
+import trip1 from "@/assets/moments/WhatsApp-Image-2026-09-01-at-3.49.33-PM.jpeg";
+import trip2 from "@/assets/moments/image-copy-8.png";
+import trip3 from "@/assets/moments/image-copy-4-clean.png";
 import engagementImg from "@/assets/moments/IMG_20260628_123805.jpeg";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
