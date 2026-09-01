@@ -86,8 +86,8 @@ const Masonry = ({
 }: MasonryProps) => {
   const columns = useMedia(
     ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'],
-    [5, 4, 3, 2],
-    1
+    [3, 3, 3, 3],
+    3
   );
 
   const [containerRef, { width }] = useMeasure();
@@ -127,22 +127,24 @@ const Masonry = ({
     preloadImages(items.map(i => i.img)).then(() => setImagesReady(true));
   }, [items]);
 
-  const grid = useMemo(() => {
-    if (!width) return [];
+  const [grid, maxColHeight] = useMemo(() => {
+    if (!width) return [[], 0];
 
     const colHeights = new Array(columns).fill(0);
     const columnWidth = width / columns;
 
-    return items.map(child => {
+    const computedGrid = items.map(child => {
       const col = colHeights.indexOf(Math.min(...colHeights));
       const x = columnWidth * col;
-      const height = child.height / 2;
+      const height = (child.height * columnWidth) / 800; // scale based on 800px reference width
       const y = colHeights[col];
 
       colHeights[col] += height;
 
       return { ...child, x, y, w: columnWidth, h: height };
     });
+
+    return [computedGrid, Math.max(...colHeights)];
   }, [columns, items, width]);
 
   const hasMounted = useRef(false);
@@ -239,7 +241,7 @@ const Masonry = ({
   };
 
   return (
-    <div ref={containerRef} className="list">
+    <div ref={containerRef} className="list" style={{ minHeight: maxColHeight }}>
       {grid.map((item, index) => {
         return (
           <div

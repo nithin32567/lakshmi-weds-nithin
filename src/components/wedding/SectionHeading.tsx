@@ -40,7 +40,7 @@ export function SectionHeading({ malayalam, title, subtitle, dark = false }: Sec
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto max-w-3xl px-6 text-center"
     >
-      <p className="font-malayalam text-sm font-bold tracking-[0.28em] text-gold md:text-base">
+      <p className="font-malayalam text-sm font-bold text-gold md:text-4xl">
         {malayalam}
       </p>
       <h2

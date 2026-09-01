@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 
 import { SectionHeading } from "./SectionHeading";
 import placeholder from "@/assets/fixing.jpeg";
-import bgImage from "@/assets/envelope-background.avif";
+import bgImage from "@/assets/masonary/DSC08240-optimized.webp";
 
 const firstMeeting = placeholder;
 const coffeeDate = placeholder;
@@ -37,16 +37,15 @@ const MOMENTS = [
 
 export function LoveStory() {
   return (
-    <section id="story" className="relative bg-teak-deep py-24 md:py-32">
-      <div className="absolute inset-0 bg-black/70" />
+    <section id="story" className="relative bg-gray-100 py-24 md:py-32">
+      <div className="absolute inset-0 bg-gray-200/80" />
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 grayscale mix-blend-multiply"
         style={{ backgroundImage: `url(${bgImage})` }}
       />
 
       <div className="relative z-10">
         <SectionHeading
-        dark
         malayalam="ഞങ്ങളുടെ കഥ"
         title="Our Love Story"
         subtitle="Every great love story in Kerala begins with rain, coffee and a little bit of fate."
@@ -71,7 +70,7 @@ export function LoveStory() {
               >
                 <span
                   aria-hidden
-                  className="absolute left-[20px] top-2 size-4 rounded-full border-2 border-gold bg-teak-deep md:left-1/2 md:-translate-x-1/2"
+                  className="absolute left-[20px] top-2 size-4 rounded-full border-2 border-gold bg-gray-100 md:left-1/2 md:-translate-x-1/2"
                 />
 
                 <div className="md:w-1/2">
@@ -94,10 +93,10 @@ export function LoveStory() {
                   <p className="mt-1 font-malayalam text-xs font-bold tracking-[0.24em] text-gold/70">
                     {m.malayalam}
                   </p>
-                  <h3 className="mt-2 font-display text-3xl font-semibold text-ivory md:text-4xl">
+                  <h3 className="mt-2 font-display text-3xl font-semibold text-teak-deep md:text-4xl">
                     {m.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ivory/60 md:text-base">
+                  <p className="mt-3 text-sm leading-relaxed text-teak-deep/70 md:text-base">
                     {m.text}
                   </p>
                 </div>

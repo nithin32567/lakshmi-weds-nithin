@@ -38,7 +38,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-export function Index() {
+function Index() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

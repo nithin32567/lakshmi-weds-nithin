@@ -2,8 +2,7 @@ import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import templateImg from "@/assets/krishna-radha.png";
-import bgImage from "@/assets/bg-3.jpg";
+import templateImg from "@/assets/krishna-radha.webp";
 import rightLeafBg from "@/assets/couple-right-leaf.webp";
 import { DoodleBorder } from "./DoodleBorder";
 
@@ -319,11 +318,11 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
       <CornerOrnament position="br" />
 
       <div className="relative w-full max-w-xs sm:max-w-sm">
-        <p className="font-body text-xs uppercase tracking-[0.3em] text-ivory/90 sm:text-sm">
-          Invite you to join them
+        <p className="font-body text-xs uppercase tracking-[0.25em] text-ivory/90 sm:text-sm">
+          Together with our families
         </p>
-        <p className="mt-2 font-body text-[0.65rem] uppercase tracking-[0.24em] text-ivory/70 sm:text-xs">
-          at the celebration of their marriage
+        <p className="mt-2 font-body text-[0.65rem] uppercase tracking-[0.2em] text-ivory/70 sm:text-xs">
+          we invite you to share the joy of our beautiful beginning
         </p>
 
         <p className="mt-8 font-malayalam text-sm text-gold-light sm:text-base">1202 ചിങ്ങം 27</p>
@@ -407,11 +406,11 @@ export function InvitationCard() {
       return;
     }
 
-    const t = setTimeout(() => setOpened(true), 260);
+    const t = setTimeout(() => setOpened(true), 100);
     const b = setTimeout(() => {
       const r = cardRef.current?.getBoundingClientRect();
       if (r) setButterflies({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-    }, 1100);
+    }, 600);
 
     return () => {
       clearTimeout(t);
@@ -419,7 +418,7 @@ export function InvitationCard() {
     };
   }, [inView, reduce]);
 
-  const T = { duration: 1.5, ease: [0.22, 1, 0.36, 1] as const };
+  const T = { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
     <section

@@ -68,22 +68,22 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
     await animate(
       "[data-seal]",
       { scale: [1, 1.25, 0], opacity: [1, 1, 0] },
-      { duration: 0.55, ease: POWER2_OUT },
+      { duration: 0.35, ease: POWER2_OUT },
     );
 
     /* Phase 1 — open the flap */
-    await animate("[data-flap]", { rotateX: -180 }, { duration: 1.2, ease: POWER2_IN_OUT });
+    await animate("[data-flap]", { rotateX: -180 }, { duration: 0.7, ease: POWER2_IN_OUT });
 
     /* Phase 2 — paper extraction */
     await animate(
       card,
       { y: -(pocketH * 0.92) },
-      { duration: 2, ease: POWER1_IN_OUT },
+      { duration: 1.0, ease: POWER1_IN_OUT },
     );
 
     /* Phase 3 — fly out & fullscreen expansion */
     card.style.zIndex = "10";
-    animate("[data-part]", { opacity: 0 }, { duration: 1.1, ease: POWER2_OUT });
+    animate("[data-part]", { opacity: 0 }, { duration: 0.6, ease: POWER2_OUT });
     await animate(
       card,
       {
@@ -93,10 +93,10 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
         borderRadius: "0px",
         boxShadow: "0 0 0 0 rgba(0,0,0,0)",
       },
-      { duration: 2.5, ease: POWER2_OUT },
+      { duration: 1.2, ease: POWER2_OUT },
     );
 
-    await animate(scope.current, { opacity: 0 }, { duration: 0.6, ease: "linear" });
+    await animate(scope.current, { opacity: 0 }, { duration: 0.4, ease: "linear" });
     document.body.style.overflow = "";
     setDone(true);
     onComplete?.();

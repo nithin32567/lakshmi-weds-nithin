@@ -3,24 +3,25 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { SectionHeading } from "./SectionHeading";
-import placeholder from "@/assets/fixing.jpeg";
 import Masonry from "./Masonry";
+const modules = import.meta.glob('../../assets/masonary/*.{webp,jpg,jpeg,png,JPG,JPEG,PNG}', { eager: true, query: '?url', import: 'default' });
 
-const backwaters = placeholder;
-const bride = placeholder;
-const elephant = placeholder;
-const groom = placeholder;
-const hands = placeholder;
-const lamps = placeholder;
+const imageMap = new Map<string, string>();
+for (const path in modules) {
+  const src = modules[path] as string;
+  const filename = path.split('/').pop()?.split('.')[0];
+  if (filename) {
+    if (path.endsWith('.webp') || !imageMap.has(filename)) {
+      imageMap.set(filename, src);
+    }
+  }
+}
 
-const PHOTOS = [
-  { src: bride, alt: "Lakshmi in a traditional kasavu saree with temple jewellery", height: 800 },
-  { src: lamps, alt: "Rows of lit brass nilavilakku lamps at dusk", height: 400 },
-  { src: hands, alt: "Henna-adorned hands exchanging garlands", height: 600 },
-  { src: backwaters, alt: "Kerala backwaters at golden hour with a houseboat", height: 500 },
-  { src: groom, alt: "Nithin in a traditional mundu and gold-bordered shawl", height: 900 },
-  { src: elephant, alt: "Caparisoned temple elephant during a Kerala festival procession", height: 550 },
-];
+const PHOTOS = Array.from(imageMap.values()).map((src, i) => ({
+  src,
+  alt: "Memories",
+  height: 600 + (i % 3) * 200, 
+}));
 
 const masonryItems = PHOTOS.map((p, i) => ({
   id: String(i),
@@ -58,17 +59,17 @@ export function Gallery() {
         subtitle="Glimpses of the land, the light and the love that shaped this celebration."
       />
 
-      <div className="mx-auto mt-14 max-w-6xl px-6 h-[600px] sm:h-[800px] md:h-[1000px] w-full">
+      <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-6 w-full">
         <Masonry
           items={masonryItems}
-          ease="power3.out"
-          duration={0.6}
-          stagger={0.05}
-          animateFrom="bottom"
+          ease="bounce.out"
+          duration={1.5}
+          stagger={0.11}
+          animateFrom="left"
           scaleOnHover={true}
           hoverScale={0.95}
-          blurToFocus={true}
-          colorShiftOnHover={false}
+          blurToFocus={false}
+          colorShiftOnHover={true}
           onItemClick={(item, index) => setIndex(index)}
         />
       </div>
