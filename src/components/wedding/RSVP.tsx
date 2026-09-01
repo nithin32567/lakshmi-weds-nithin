@@ -7,36 +7,12 @@ import { SectionHeading } from "./SectionHeading";
 interface Wish {
   id: string;
   name: string;
-  attending: string;
-  guests: number;
   message: string;
 }
 
 const STORAGE_KEY = "nl-wedding-wishes";
 
-const SEED: Wish[] = [
-  {
-    id: "seed-1",
-    name: "Ammu & Family",
-    attending: "yes",
-    guests: 4,
-    message: "Can't wait to see the thali tied! Wishing you both a lifetime of payasam-sweet days.",
-  },
-  {
-    id: "seed-2",
-    name: "Arjun Pillai",
-    attending: "yes",
-    guests: 2,
-    message: "From hostel roommate to groom. So proud of you, Nithin. See you at the mandapam!",
-  },
-  {
-    id: "seed-3",
-    name: "Meera Thomas",
-    attending: "maybe",
-    guests: 1,
-    message: "Trying my best to fly down from Dubai. Sending all my love either way. ❤️",
-  },
-];
+const SEED: Wish[] = [];
 
 function Hearts() {
   return (
@@ -59,7 +35,7 @@ function Hearts() {
 export function RSVP() {
   const [wishes, setWishes] = useState<Wish[]>(SEED);
   const [celebrate, setCelebrate] = useState(false);
-  const [form, setForm] = useState({ name: "", attending: "yes", guests: 1, message: "" });
+  const [form, setForm] = useState({ name: "", message: "" });
 
   useEffect(() => {
     try {
@@ -76,8 +52,6 @@ export function RSVP() {
     const wish: Wish = {
       id: `${Date.now()}`,
       name: form.name.trim(),
-      attending: form.attending,
-      guests: Number(form.guests) || 1,
       message: form.message.trim() || "Wishing you both a beautiful beginning!",
     };
     const next = [wish, ...wishes];
@@ -87,7 +61,7 @@ export function RSVP() {
     } catch {
       /* ignore */
     }
-    setForm({ name: "", attending: "yes", guests: 1, message: "" });
+    setForm({ name: "", message: "" });
     setCelebrate(true);
     setTimeout(() => setCelebrate(false), 2600);
   };
@@ -96,12 +70,12 @@ export function RSVP() {
     "w-full rounded-xl border border-gold/30 bg-ivory/5 px-4 py-3 text-sm text-ivory placeholder:text-ivory/35 outline-none transition-colors focus:border-gold";
 
   return (
-    <section id="rsvp" className="relative overflow-hidden bg-teak py-24 md:py-32">
+    <section id="blessings" className="relative overflow-hidden bg-teak py-24 md:py-32">
       <SectionHeading
         dark
         malayalam="ആശംസകൾ"
-        title="RSVP & Wishes"
-        subtitle="Let us know you're coming and leave a blessing on our wishes wall."
+        title="Send Blessings"
+        subtitle="Leave a blessing on our wishes wall."
       />
 
       <div className="mx-auto mt-14 grid max-w-6xl gap-10 px-6 lg:grid-cols-2">
@@ -115,11 +89,11 @@ export function RSVP() {
           <AnimatePresence>{celebrate && <Hearts />}</AnimatePresence>
           <form onSubmit={submit} className="space-y-4">
             <div>
-              <label htmlFor="rsvp-name" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
+              <label htmlFor="blessings-name" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
                 Your name
               </label>
               <input
-                id="rsvp-name"
+                id="blessings-name"
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -128,44 +102,12 @@ export function RSVP() {
               />
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="rsvp-attending" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
-                  Will you join us?
-                </label>
-                <select
-                  id="rsvp-attending"
-                  value={form.attending}
-                  onChange={(e) => setForm({ ...form, attending: e.target.value })}
-                  className={field}
-                >
-                  <option value="yes">Yes, with joy!</option>
-                  <option value="maybe">Trying my best</option>
-                  <option value="no">Sadly, cannot</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="rsvp-guests" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
-                  Guests
-                </label>
-                <input
-                  id="rsvp-guests"
-                  type="number"
-                  min={1}
-                  max={12}
-                  value={form.guests}
-                  onChange={(e) => setForm({ ...form, guests: Number(e.target.value) })}
-                  className={field}
-                />
-              </div>
-            </div>
-
             <div>
-              <label htmlFor="rsvp-message" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
+              <label htmlFor="blessings-message" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
                 A wish for the couple
               </label>
               <textarea
-                id="rsvp-message"
+                id="blessings-message"
                 rows={4}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -200,9 +142,6 @@ export function RSVP() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="font-display text-xl font-semibold text-ivory">{w.name}</h3>
-                  <span className="rounded-full border border-gold/35 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-gold">
-                    {w.attending === "yes" ? `Attending · ${w.guests}` : w.attending === "maybe" ? "Maybe" : "Regrets"}
-                  </span>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-ivory/65">{w.message}</p>
               </motion.article>

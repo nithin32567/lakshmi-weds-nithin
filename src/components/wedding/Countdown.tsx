@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const TARGET = new Date("2026-09-12T10:30:00+05:30").getTime();
+const TARGET = new Date("2026-09-12T11:00:00+05:30").getTime();
 
 function diff() {
   const d = Math.max(0, TARGET - Date.now());

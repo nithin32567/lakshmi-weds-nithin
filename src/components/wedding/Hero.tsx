@@ -87,13 +87,13 @@ export function Hero() {
             href="#rsvp"
             className="w-full sm:w-auto rounded-full bg-gold px-8 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-teak-deep transition-transform duration-300 hover:scale-105 text-center"
           >
-            RSVP
+            Send Blessings
           </a>
           <a
-            href="#events"
+            href="#invitation"
             className="w-full sm:w-auto rounded-full border border-gold/60 px-8 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-gold transition-colors duration-300 hover:bg-gold/10 text-center"
           >
-            View Events
+            View Invitation
           </a>
         </motion.div>
       </motion.div>

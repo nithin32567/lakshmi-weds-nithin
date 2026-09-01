@@ -8,7 +8,7 @@ const LINKS = [
   { href: "#venue", label: "Venue" },
   { href: "#sadya", label: "Sadya" },
   { href: "#gallery", label: "Gallery" },
-  { href: "#rsvp", label: "RSVP" },
+  { href: "#blessings", label: "Blessings" },
 ];
 
 export function Navbar() {
