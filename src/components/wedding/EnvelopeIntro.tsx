@@ -2,7 +2,7 @@ import { useAnimate } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleField } from "@/components/wedding/ParticleField";
 import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
-import bgImage from "@/assets/background1.jpeg";
+import bgImage from "@/assets/background1.webp";
 
 
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
@@ -20,6 +20,8 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
   const [playing, setPlaying] = useState(false);
   const started = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const touchStartPos = useRef({ x: 0, y: 0 });
+  const isSwiping = useRef(false);
 
   useEffect(() => {
     audioRef.current = new Audio(bgmFile);
@@ -44,7 +46,14 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
   }, [done]);
 
 
-  const play = useCallback(async () => {
+  const play = useCallback(async (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+      if (e.type !== "touchstart") {
+        e.preventDefault();
+      }
+    }
+    
     if (audioRef.current) {
       audioRef.current.play().catch(console.warn);
     }
@@ -93,7 +102,14 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
     onComplete?.();
   }, [animate, onComplete, scope]);
 
-  const handleSkip = useCallback(() => {
+  const handleSkip = useCallback((e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+      if (e.type !== "touchstart") {
+        e.preventDefault();
+      }
+    }
+    
     if (audioRef.current) {
       audioRef.current.play().catch(console.warn);
     }
@@ -154,7 +170,26 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
           <div className="absolute top-6 right-6 z-[350]">
             <button
               type="button"
-              onClick={handleSkip}
+              onClick={(e) => {
+                if (isSwiping.current) return;
+                handleSkip(e);
+              }}
+              onTouchStart={(e) => {
+                touchStartPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                isSwiping.current = false;
+              }}
+              onTouchMove={(e) => {
+                const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
+                const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
+                if (dx > 10 || dy > 10) {
+                  isSwiping.current = true;
+                }
+              }}
+              onTouchEnd={(e) => {
+                if (isSwiping.current) return;
+                e.preventDefault();
+                handleSkip(e);
+              }}
               className="flex items-center gap-2 rounded-full border border-amber-500/30 bg-slate-900/60 px-4 py-2 text-xs font-medium tracking-wider text-amber-200/90 backdrop-blur-md transition-all hover:scale-105 hover:border-amber-400 hover:bg-slate-900/80 hover:text-amber-100"
             >
               Skip Intro
@@ -291,7 +326,26 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
               <button
                 data-seal
                 type="button"
-                onClick={play}
+                onClick={(e) => {
+                  if (isSwiping.current) return;
+                  play(e);
+                }}
+                onTouchStart={(e) => {
+                  touchStartPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                  isSwiping.current = false;
+                }}
+                onTouchMove={(e) => {
+                  const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
+                  const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
+                  if (dx > 10 || dy > 10) {
+                    isSwiping.current = true;
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (isSwiping.current) return;
+                  e.preventDefault(); // Prevents the follow-up click event on iOS
+                  play(e);
+                }}
                 disabled={playing}
                 aria-label="Open the invitation"
                 className="pointer-events-auto absolute left-1/2 top-[52%] flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:pointer-events-none"

@@ -1,10 +1,10 @@
-import { motion } from "motion/react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import templateImg from "@/assets/krishna-radha.png";
 import bgImage from "@/assets/bg-3.jpg";
-import rightLeafBg from "@/assets/couple-right-leaf.JPG";
+import rightLeafBg from "@/assets/couple-right-leaf.webp";
 import { DoodleBorder } from "./DoodleBorder";
 
 /* ─── Butterflies (reduced to 4 for minimalism) ──────────── */
@@ -221,7 +221,7 @@ const panelSurface: React.CSSProperties = {
 function NamesPanel({ opened }: { opened?: boolean }) {
   return (
     <div
-      className="relative flex h-full min-h-[28rem] flex-col items-center justify-center overflow-hidden px-2 py-6 text-center sm:min-h-[36rem] sm:px-12 sm:py-16 md:min-h-[38rem]"
+      className="relative flex h-full flex-col items-center justify-center overflow-hidden px-2 py-8 text-center sm:px-12 sm:py-16"
     >
       {/* Doodle art border with animated flowers & leaves */}
       <DoodleBorder active={opened} />
@@ -289,7 +289,7 @@ function NamesPanel({ opened }: { opened?: boolean }) {
 function DetailsPanel({ opened }: { opened?: boolean }) {
   return (
     <div
-      className="relative flex h-full min-h-[28rem] flex-col items-center justify-center overflow-hidden px-2 py-6 text-center sm:min-h-[36rem] sm:px-12 sm:py-20 md:min-h-[38rem]"
+      className="relative flex h-full flex-col items-center justify-center overflow-hidden px-2 py-8 text-center sm:px-12 sm:py-20"
     >
       {/* Background Image */}
       <div
@@ -298,7 +298,7 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
       />
       {/* Yellow overlay with bright base to keep details readable */}
       <div className="absolute inset-0 bg-black0" />
-      <div className="absolute inset-0 bg-[#faf7f2]/55" />
+      <div className="absolute inset-0 bg-[#faf7f2]/25" />
 
       {/* Doodle art border with animated flowers & leaves */}
       <DoodleBorder active={opened} />
@@ -309,7 +309,7 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 50% at 50% 50%, rgba(212, 175, 120, 0.08), transparent 70%)",
+            "radial-gradient(60% 50% at 50% 50%, rgba(212, 175, 120, 0.08), transparent 15%)",
         }}
       />
 
@@ -319,45 +319,47 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
       <CornerOrnament position="br" />
 
       <div className="relative w-full max-w-xs sm:max-w-sm">
-        <p className="font-body text-[0.6rem] uppercase tracking-[0.3em] text-amber-900/70 sm:text-xs">
+        <p className="font-body text-xs uppercase tracking-[0.3em] text-ivory/90 sm:text-sm">
           Invite you to join them
         </p>
-        <p className="mt-1 font-body text-[0.55rem] uppercase tracking-[0.24em] text-amber-800/50 sm:text-[0.7rem]">
+        <p className="mt-2 font-body text-[0.65rem] uppercase tracking-[0.24em] text-ivory/70 sm:text-xs">
           at the celebration of their marriage
         </p>
 
-        {/* Date grid */}
-        <div className="mx-auto mt-6 grid w-full grid-cols-[1fr_auto_1fr] items-center rounded-md border border-amber-800/15 bg-white/40 backdrop-blur-sm sm:mt-8">
-          <div className="px-2 py-2 sm:px-3 sm:py-3">
-            <p className="font-body text-[0.45rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
-              Saturday
-            </p>
-            <p className="mt-1 text-[0.45rem] text-amber-800/60 sm:text-[0.7rem]">11:00 AM – 12:00 PM</p>
-          </div>
-          <div className="flex h-full items-center border-x border-amber-800/15 px-3 py-2 sm:px-5 sm:py-3">
-            <span className="font-display text-3xl font-semibold text-amber-900 sm:text-4xl">12</span>
-          </div>
-          <div className="px-2 py-2 sm:px-3 sm:py-3">
-            <p className="font-body text-[0.45rem] font-semibold uppercase tracking-[0.18em] text-amber-950 sm:text-xs">
-              September
-            </p>
-            <p className="mt-1 text-[0.45rem] text-amber-800/60 sm:text-[0.7rem]">2026</p>
-          </div>
-        </div>
-
-        <p className="mt-6 font-malayalam text-[0.65rem] text-amber-950/65 sm:text-sm">1202 ചിങ്ങം 27</p>
-        <p className="mt-1 font-malayalam text-[0.6rem] leading-relaxed text-amber-900/50 sm:text-xs">
+        <p className="mt-8 font-malayalam text-sm text-gold-light sm:text-base">1202 ചിങ്ങം 27</p>
+        <p className="mt-2 font-malayalam text-xs leading-relaxed text-ivory/80 sm:text-sm">
           ശുഭമുഹൂർത്തത്തിൽ വിവാഹിതരാകുന്നു
         </p>
 
-        <OrnamentalDivider className="my-5 sm:my-6" />
+        <OrnamentalDivider className="my-6 sm:my-8" />
 
-        <p className="font-body text-[0.55rem] uppercase tracking-[0.3em] text-amber-800/60 sm:text-[0.65rem]">
+        <p className="font-body text-[0.65rem] uppercase tracking-[0.3em] text-gold-light/90 sm:text-xs">
           Venue
         </p>
-        <p className="mt-1 font-malayalam text-[0.7rem] text-amber-950/70 sm:text-sm">
-          കല്യാണമണ്ഡപം, കൊച്ചി
+        <p className="mt-2 font-body text-sm leading-relaxed text-ivory/90 sm:text-base">
+          Sri Chathan Master Memorial Community Hall,
+          <br />
+          V.R. Puram, Chalakudy
         </p>
+      </div>
+
+      {/* Date grid */}
+      <div className="mx-auto mt-8 grid w-full grid-cols-[1fr_auto_1fr] items-center rounded-md border border-white/10 bg-black/40 backdrop-blur-md sm:mt-10">
+        <div className="px-2 py-3 sm:px-4 sm:py-4">
+          <p className="font-body text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-ivory sm:text-sm">
+            Saturday
+          </p>
+          <p className="mt-1.5 text-[0.6rem] text-ivory/70 sm:text-xs">11:00 AM – 12:00 PM</p>
+        </div>
+        <div className="flex h-full items-center border-x border-white/10 px-4 py-3 sm:px-6 sm:py-4">
+          <span className="font-display text-4xl font-semibold text-gold-light sm:text-5xl">12</span>
+        </div>
+        <div className="px-2 py-3 sm:px-4 sm:py-4">
+          <p className="font-body text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-ivory sm:text-sm">
+            September
+          </p>
+          <p className="mt-1.5 text-[0.6rem] text-ivory/70 sm:text-xs">2026</p>
+        </div>
       </div>
     </div>
   );
@@ -367,15 +369,15 @@ function DetailsPanel({ opened }: { opened?: boolean }) {
 
 const crease = (dir: "l" | "r" | "t" | "b") => {
   const map = {
-    l: "absolute inset-y-0 left-0 w-6 bg-gradient-to-r",
-    r: "absolute inset-y-0 right-0 w-6 bg-gradient-to-l",
-    t: "absolute inset-x-0 top-0 h-6 bg-gradient-to-b",
-    b: "absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t",
+    l: "absolute inset-y-0 left-0 w-8 bg-gradient-to-r sm:w-12",
+    r: "absolute inset-y-0 right-0 w-8 bg-gradient-to-l sm:w-12",
+    t: "absolute inset-x-0 top-0 h-8 bg-gradient-to-b sm:h-12",
+    b: "absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t sm:h-12",
   } as const;
   return (
     <div
       aria-hidden
-      className={`pointer-events-none ${map[dir]} from-amber-950/10 to-transparent`}
+      className={`pointer-events-none ${map[dir]} from-teak/15 to-transparent`}
     />
   );
 };
@@ -390,79 +392,51 @@ export function InvitationCard() {
   const [butterflies, setButterflies] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
 
+  const inView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const reduce = useReducedMotion();
+
   useEffect(() => setMounted(true), []);
 
-  /* Open when the section is scrolled into view using high-performance IntersectionObserver */
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    if (!inView) return;
+    
+    if (reduce) {
+      setOpened(true);
+      const r = cardRef.current?.getBoundingClientRect();
+      if (r) setButterflies({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+      return;
+    }
 
-    let openTimer: ReturnType<typeof setTimeout> | null = null;
-    let butterflyTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          openTimer = setTimeout(() => setOpened(true), 350);
-          butterflyTimer = setTimeout(() => {
-            const r = cardRef.current?.getBoundingClientRect();
-            if (r) setButterflies({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-          }, 1100);
-        } else {
-          if (openTimer) clearTimeout(openTimer);
-          if (butterflyTimer) clearTimeout(butterflyTimer);
-          openTimer = null;
-          butterflyTimer = null;
-          setOpened(false);
-          setButterflies(null);
-        }
-      },
-      {
-        threshold: 0.25,
-      }
-    );
-
-    observer.observe(section);
+    const t = setTimeout(() => setOpened(true), 260);
+    const b = setTimeout(() => {
+      const r = cardRef.current?.getBoundingClientRect();
+      if (r) setButterflies({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    }, 1100);
 
     return () => {
-      observer.disconnect();
-      if (openTimer) clearTimeout(openTimer);
-      if (butterflyTimer) clearTimeout(butterflyTimer);
+      clearTimeout(t);
+      clearTimeout(b);
     };
-  }, []);
+  }, [inView, reduce]);
 
-  /* Realistic book-fold transition */
-  const openTransition = {
-    duration: 1.6,
-    ease: [0.16, 1, 0.3, 1] as const,
-  };
-  const closeTransition = {
-    duration: 1.2,
-    ease: [0.4, 0, 0.2, 1] as const,
-  };
+  const T = { duration: 1.5, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
     <section
       id="invitation"
       ref={sectionRef}
-      className="relative overflow-hidden bg-black py-14 sm:py-20 md:py-28"
+      className="relative overflow-hidden bg-teak-deep px-3 py-14 sm:px-6 sm:py-20 md:py-28"
     >
       <style>{WING_CSS}</style>
 
       {/* Ambient glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70"
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 45% at 50% 40%, rgb(196 181 253 / 0.25), transparent 70%)",
+            "radial-gradient(65% 50% at 50% 30%, color-mix(in oklab, var(--gold) 16%, transparent), transparent 70%)",
         }}
-      />
-
-      {/* Background Image Overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-        style={{ backgroundImage: `url(${bgImage})` }}
       />
 
       {/* Butterflies */}
@@ -484,101 +458,80 @@ export function InvitationCard() {
 
       <div
         ref={cardRef}
-        className="relative mx-auto w-[calc(100%-1rem)] sm:w-[min(92vw,34rem)] md:w-[min(92vw,58rem)]"
-        style={{ perspective: "1800px" }}
+        className="relative mx-auto w-full max-w-[30rem] md:max-w-[52rem]"
+        style={{ perspective: "1600px" }}
       >
-        {/* Soft shadow underneath */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-8 bottom-1 h-12 rounded-[50%] blur-2xl"
-          style={{ background: "rgba(40, 20, 10, 0.25)" }}
+          className="pointer-events-none absolute inset-x-5 bottom-1 h-12 rounded-[50%] bg-black/55 blur-2xl"
         />
 
-        {/* ─── Realistic left/right book fold for all screens ───── */}
+        {/* Mobile — top / bottom fold */}
         <div
-          className="relative grid grid-cols-2 overflow-hidden rounded-xl"
+          className="relative grid auto-rows-fr overflow-hidden rounded-[1.1rem] shadow-[0_40px_90px_-40px_rgb(0_0_0/0.85)] ring-1 ring-gold/35 md:hidden"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Left leaf — Names — swings from right edge like a real book cover */}
           <motion.div
-            initial={{ rotateY: 92, opacity: 0 }}
-            animate={
-              opened
-                ? { rotateY: 0, opacity: 1 }
-                : { rotateY: 92, opacity: 0 }
-            }
-            transition={opened ? openTransition : closeTransition}
-            className="relative origin-right"
-            style={{
-              ...panelSurface,
-              boxShadow: opened
-                ? "inset -4px 0 12px -4px rgba(40,20,10,0.12)"
-                : "none",
-            }}
+            initial={{ rotateX: -94, opacity: 0 }}
+            animate={opened ? { rotateX: 0, opacity: 1 } : {}}
+            transition={T}
+            className="relative h-full w-full origin-bottom"
+            style={panelSurface}
+          >
+            <NamesPanel opened={opened} />
+            {crease("b")}
+          </motion.div>
+
+          <motion.div
+            initial={{ rotateX: 94, opacity: 0 }}
+            animate={opened ? { rotateX: 0, opacity: 1 } : {}}
+            transition={{ ...T, delay: 0.18 }}
+            className="relative h-full w-full origin-top"
+            style={panelSurface}
+          >
+            <DetailsPanel opened={opened} />
+            {crease("t")}
+          </motion.div>
+
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 z-10 h-px -translate-y-1/2 bg-gold/40" />
+        </div>
+
+        {/* Desktop — left / right book fold */}
+        <div
+          className="relative hidden overflow-hidden rounded-[1.1rem] shadow-[0_50px_110px_-45px_rgb(0_0_0/0.9)] ring-1 ring-gold/35 md:grid md:grid-cols-2"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <motion.div
+            initial={{ rotateY: 90, opacity: 0 }}
+            animate={opened ? { rotateY: 0, opacity: 1 } : {}}
+            transition={T}
+            className="relative h-full w-full origin-right"
+            style={panelSurface}
           >
             <NamesPanel opened={opened} />
             {crease("r")}
           </motion.div>
 
-          {/* Right leaf — Details — swings from left edge */}
           <motion.div
-            initial={{ rotateY: -92, opacity: 0 }}
-            animate={
-              opened
-                ? { rotateY: 0, opacity: 1 }
-                : { rotateY: -92, opacity: 0 }
-            }
-            transition={
-              opened
-                ? { ...openTransition, delay: 0.12 }
-                : { ...closeTransition, delay: 0.06 }
-            }
-            className="relative origin-left"
-            style={{
-              ...panelSurface,
-              boxShadow: opened
-                ? "inset 4px 0 12px -4px rgba(40,20,10,0.12)"
-                : "none",
-            }}
+            initial={{ rotateY: -90, opacity: 0 }}
+            animate={opened ? { rotateY: 0, opacity: 1 } : {}}
+            transition={{ ...T, delay: 0.14 }}
+            className="relative h-full w-full origin-left"
+            style={panelSurface}
           >
             <DetailsPanel opened={opened} />
             {crease("l")}
           </motion.div>
 
-          {/* Spine shadow — the center fold line */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-1/2 z-10 -translate-x-1/2"
-            style={{
-              width: "6px",
-              background:
-                "linear-gradient(90deg, rgba(40,20,10,0.08), rgba(40,20,10,0.14), rgba(40,20,10,0.08))",
-            }}
-          />
-
-          {/* Soft drop shadow behind card */}
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute -inset-2 -z-10 rounded-2xl"
-            animate={
-              opened
-                ? { opacity: 1, scale: 1 }
-                : { opacity: 0, scale: 0.96 }
-            }
-            transition={opened ? openTransition : closeTransition}
-            style={{
-              boxShadow:
-                "0 40px 100px -30px rgba(30,15,5,0.45), 0 15px 40px -15px rgba(30,15,5,0.2)",
-            }}
+            className="pointer-events-none absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gold/45"
           />
         </div>
-
-
       </div>
 
-      {/* Scroll hint */}
       {!opened && (
-        <p className="relative mt-8 text-center text-[0.6rem] uppercase tracking-[0.35em] text-ivory/70">
+        <p className="relative mt-8 text-center font-body text-[0.6rem] uppercase tracking-[0.35em] text-ivory/60">
           scroll to open ↓
         </p>
       )}
