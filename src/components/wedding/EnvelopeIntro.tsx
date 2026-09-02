@@ -2,7 +2,7 @@ import { useAnimate } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ParticleField } from "@/components/wedding/ParticleField";
 import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
-import bgImage from "@/assets/envelope_bg.JPG";
+import bgImage from "@/assets/masonary/DSC07980.webp";
 
 
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
