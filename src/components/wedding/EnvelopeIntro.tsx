@@ -5,6 +5,7 @@ import bgmFile from "@/assets/DC-The-Rose-BGM.mp3";
 import bgImage from "@/assets/masonary/DSC07980.webp";
 
 
+
 const POWER2_IN_OUT = [0.65, 0, 0.35, 1] as const;
 const POWER1_IN_OUT = [0.45, 0, 0.55, 1] as const;
 const POWER2_OUT = [0.22, 1, 0.36, 1] as const;
