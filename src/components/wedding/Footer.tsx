@@ -12,8 +12,8 @@ export function Footer() {
         12 September 2026 · Kochi, Kerala
       </p>
       <div className="mx-auto my-8 h-px w-40 bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
-      <p className="text-xs text-ivory/35">
-        Made with love, kasavu and a little bit of gold.
+      <p className="font-malayalam text-[0.8rem] text-ivory/60 leading-relaxed max-w-sm mx-auto mt-2">
+        ഞങ്ങളുടെ ഈ പുതിയ തുടക്കത്തിലേക്ക് പ്രിയപ്പെട്ട കൂട്ടുകാർക്കും കുടുംബാംഗങ്ങൾക്കും ഹൃദയം നിറഞ്ഞ സ്വാഗതം. നിങ്ങളുടെ സ്നേഹവും പ്രാർത്ഥനയും എപ്പോഴും കൂടെയുണ്ടാകണം.
       </p>
     </footer>
   );

@@ -1,20 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
 
 import { EnvelopeIntro } from "@/components/wedding/EnvelopeIntro";
 import { SmoothScroll } from "@/components/wedding/SmoothScroll";
 import { ParticleField } from "@/components/wedding/ParticleField";
-
-const CustomCursor = lazy(() => import("@/components/wedding/CustomCursor").then((m) => ({ default: m.CustomCursor })));
-const Footer = lazy(() => import("@/components/wedding/Footer").then((m) => ({ default: m.Footer })));
-const Gallery = lazy(() => import("@/components/wedding/Gallery").then((m) => ({ default: m.Gallery })));
-const Hero = lazy(() => import("@/components/wedding/Hero").then((m) => ({ default: m.Hero })));
-const InvitationCard = lazy(() => import("@/components/wedding/InvitationCard").then((m) => ({ default: m.InvitationCard })));
-const LoveStory = lazy(() => import("@/components/wedding/LoveStory").then((m) => ({ default: m.LoveStory })));
-const MeetUs = lazy(() => import("@/components/wedding/MeetUs").then((m) => ({ default: m.MeetUs })));
-const Navbar = lazy(() => import("@/components/wedding/Navbar").then((m) => ({ default: m.Navbar })));
-const RSVP = lazy(() => import("@/components/wedding/RSVP").then((m) => ({ default: m.RSVP })));
-const VenueMap = lazy(() => import("@/components/wedding/VenueMap").then((m) => ({ default: m.VenueMap })));
+import { CustomCursor } from "@/components/wedding/CustomCursor";
+import { Footer } from "@/components/wedding/Footer";
+import { Gallery } from "@/components/wedding/Gallery";
+import { Hero } from "@/components/wedding/Hero";
+import { InvitationCard } from "@/components/wedding/InvitationCard";
+import { LoveStory } from "@/components/wedding/LoveStory";
+import { MeetUs } from "@/components/wedding/MeetUs";
+import { Navbar } from "@/components/wedding/Navbar";
+import { RSVP } from "@/components/wedding/RSVP";
+import { VenueMap } from "@/components/wedding/VenueMap";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,31 +37,21 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-
   return (
-    <Suspense fallback={null}>
-      <EnvelopeIntro>
-        <SmoothScroll>
-          <CustomCursor />
-          <Navbar />
-          <Hero />
-          <MeetUs />
-          <ParticleField density={80} />
-          <InvitationCard />
-          <LoveStory />
-          <Gallery />
-          <VenueMap />
-          <RSVP />
-          <Footer />
-        </SmoothScroll>
-      </EnvelopeIntro>
-    </Suspense>
+    <EnvelopeIntro>
+      <SmoothScroll>
+        <CustomCursor />
+        <Navbar />
+        <Hero />
+        <MeetUs />
+        <ParticleField density={80} />
+        <InvitationCard />
+        <LoveStory />
+        <Gallery />
+        <VenueMap />
+        <RSVP />
+        <Footer />
+      </SmoothScroll>
+    </EnvelopeIntro>
   );
 }

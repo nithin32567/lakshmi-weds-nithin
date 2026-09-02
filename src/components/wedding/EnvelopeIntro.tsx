@@ -145,6 +145,7 @@ export function EnvelopeIntro({ children, onComplete }: EnvelopeIntroProps) {
               src={bgImage}
               alt=""
               className="h-full w-full object-cover object-center"
+              fetchPriority="high"
             />
             {/* Dark overlay mask for visual depth and readability */}
             <div className="absolute inset-0 bg-slate-950/20" />
