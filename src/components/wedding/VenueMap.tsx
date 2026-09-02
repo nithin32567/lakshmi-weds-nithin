@@ -27,7 +27,7 @@ export function VenueMap() {
       />
 
       <SectionHeading
-        malayalam="സ്ഥലം"
+        malayalam=""
         title="Venue"
         subtitle="Sri Chathan Master Memorial Community Hall, V.R. Puram, Chalakudy — where we say our vows."
         dark

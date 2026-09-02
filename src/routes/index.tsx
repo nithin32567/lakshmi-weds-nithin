@@ -57,9 +57,9 @@ function Index() {
           <MeetUs />
           <ParticleField density={80} />
           <InvitationCard />
-          <VenueMap />
           <LoveStory />
           <Gallery />
+          <VenueMap />
           <RSVP />
           <Footer />
         </SmoothScroll>

@@ -3,6 +3,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Heart } from "lucide-react";
 
 import { SectionHeading } from "./SectionHeading";
+import bgImage from "../../assets/rsvpbg.webp";
 
 interface Wish {
   id: string;
@@ -67,27 +68,51 @@ export function RSVP() {
   };
 
   const field =
-    "w-full rounded-xl border border-gold/30 bg-ivory/5 px-4 py-3 text-sm text-ivory placeholder:text-ivory/35 outline-none transition-colors focus:border-gold";
+    "w-full rounded-xl border border-gold/30 bg-black/20 backdrop-blur-md px-4 py-3 text-sm text-ivory placeholder:text-ivory/45 outline-none transition-all focus:border-gold focus:bg-black/30 focus:shadow-[0_0_15px_rgba(223,190,106,0.2)]";
 
   return (
     <section id="blessings" className="relative overflow-hidden bg-teak py-24 md:py-32">
-      <SectionHeading
-        dark
-        malayalam="ആശംസകൾ"
-        title="Send Blessings"
-        subtitle="Leave a blessing on our wishes wall."
+      {/* Background photo */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${bgImage})`, opacity: 0.75 }}
       />
+      {/* Overlay to ensure text legibility while allowing background to shine */}
+      <div className="pointer-events-none absolute inset-0 bg-teak/30" />
+      {/* Subtle vignette for depth */}
+      <div className="pointer-events-none absolute inset-0 bg-radial-gradient from-transparent to-black/40" />
 
-      <div className="mx-auto mt-14 grid max-w-6xl gap-10 px-6 lg:grid-cols-2">
+      <div className="relative z-10">
+        <SectionHeading
+          dark
+          malayalam=""
+          title="Send Blessings"
+          subtitle="Leave a blessing on our wishes wall."
+        />
+
+        <div className="mx-auto mt-14 grid max-w-6xl gap-10 px-6 lg:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7 }}
-          className="glass-dark relative rounded-3xl p-7 md:p-9"
+          className="relative overflow-hidden rounded-3xl p-7 md:p-9"
+          style={{
+            background: "rgba(42, 31, 20, 0.4)",
+            backdropFilter: "blur(28px) saturate(160%)",
+            WebkitBackdropFilter: "blur(28px) saturate(160%)",
+            border: "1px solid rgba(223, 190, 106, 0.35)", // gold border
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.1) inset, 0 24px 48px rgba(0,0,0,0.4)",
+          }}
         >
+          {/* Catch-light for liquid glass effect */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-0 h-32 w-full rounded-t-3xl"
+            style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%)" }}
+          />
           <AnimatePresence>{celebrate && <Hearts />}</AnimatePresence>
-          <form onSubmit={submit} className="space-y-4">
+          <form onSubmit={submit} className="relative z-10 space-y-4">
             <div>
               <label htmlFor="blessings-name" className="mb-1.5 block text-xs uppercase tracking-[0.2em] text-ivory/55">
                 Your name
@@ -138,16 +163,32 @@ export function RSVP() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="rounded-2xl border border-gold/20 bg-teak-light/40 p-6"
+                className="relative overflow-hidden rounded-2xl p-6"
+                style={{
+                  background: "rgba(42, 31, 20, 0.35)",
+                  backdropFilter: "blur(16px) saturate(150%)",
+                  WebkitBackdropFilter: "blur(16px) saturate(150%)",
+                  border: "1px solid rgba(223, 190, 106, 0.25)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+                }}
               >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="font-display text-xl font-semibold text-ivory">{w.name}</h3>
+                {/* Catch-light */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute left-0 top-0 h-16 w-full rounded-t-2xl"
+                  style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 80%)" }}
+                />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="font-display text-xl font-semibold text-ivory">{w.name}</h3>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-ivory/65">{w.message}</p>
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-ivory/65">{w.message}</p>
               </motion.article>
             ))}
           </AnimatePresence>
         </div>
+      </div>
       </div>
     </section>
   );

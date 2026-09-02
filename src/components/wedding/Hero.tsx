@@ -41,7 +41,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="font-malayalam text-sm font-bold tracking-[0.3em] text-gold sm:text-base"
+          className="font-malayalam text-xl font-bold  text-gold sm:text-3xl"
         >
           സ്നേഹപൂർവ്വം സ്വാഗതം
         </motion.p>

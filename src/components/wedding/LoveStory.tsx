@@ -34,7 +34,7 @@ interface Moment {
 const MOMENTS: Moment[] = [
   {
     id: "yes",
-    date: "23 November 2025",
+    date: "",
     icon: "🌸",
     title: "She Said Yes",
     subtitle: "The moment that changed everything",
@@ -68,7 +68,7 @@ const MOMENTS: Moment[] = [
     images: [
       { src: trip1, alt: "Nithin and Lakshmi on a motorcycle road trip" },
       { src: trip2, alt: "Couple at a mountain viewpoint" },
-      { src: trip3, alt: "Couple at Adiyogi Shiva statue — a spiritual journey together" },
+      // { src: trip3, alt: "Couple at Adiyogi Shiva statue — a spiritual journey together" },
     ],
     accent: "#4a7c59",
   },

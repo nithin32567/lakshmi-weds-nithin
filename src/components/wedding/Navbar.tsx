@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { href: "#story", label: "Our Story" },
-  { href: "#events", label: "Events" },
-  { href: "#venue", label: "Venue" },
-  { href: "#sadya", label: "Sadya" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#blessings", label: "Blessings" },
+  // { href: "#story", label: "Our Story" },
+  // { href: "#events", label: "Events" },
+  // { href: "#venue", label: "Venue" },
+  // { href: "#sadya", label: "Sadya" },
+  // { href: "#gallery", label: "Gallery" },
+  // { href: "#blessings", label: "Blessings" },
 ];
 
 export function Navbar() {
